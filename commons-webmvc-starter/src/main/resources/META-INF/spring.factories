@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.clinker.commons.jackson.CyqJacksonAutoConfiguration,\
+com.github.clinker.commons.upload.CyqUploadAutoConfiguration,\
+com.github.clinker.commons.validator.CyqValidatorAutoConfiguration,\
+com.github.clinker.commons.webmvc.CyqWebMvcAutoConfiguration
