@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.clinker.commons.upload.UploadProperties;
 import com.github.clinker.commons.upload.directory.DefaultDirectoryStrategy;
 import com.github.clinker.commons.upload.directory.DirectoryStrategy;
 import com.github.clinker.commons.upload.model.FileUploadError;
 import com.github.clinker.commons.upload.model.LocalPathResult;
-import com.github.clinker.commons.upload.model.UploadProperties;
 import com.github.clinker.commons.upload.name.FilenameStrategy;
 import com.github.clinker.commons.upload.name.RandomFilenameStrategy;
 import com.github.clinker.commons.util.exception.ServiceException;

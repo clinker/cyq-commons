@@ -13,12 +13,12 @@ Java Bean之间复制属性。
 
 - 定制
   + 转换单个Bean  
-  实现`BeanTransformer`,覆写  `customCopyProperties(SOURCE, TARGET)`
+  实现`BeanTransformer`,覆写`customCopyProperties(SOURCE, TARGET)`
   + 转换集合
-  实现`BeanTransformer`,覆写  `customTransform(List<SOURCE>, List<TARGET>)`
+  实现`BeanTransformer`,覆写`customTransform(List<SOURCE>, List<TARGET>)`
 
 - 复制时需要其他Bean
   + 转换单个Bean  
   实现`BeanExtraTransformer`，覆写`customCopyProperties(SOURCE, TARGET, EXTRA)`
   + 转换集合  
-  实现`BeanExtraTransformer`,覆写  `customTransform(List<SOURCE>, List<TARGET>, EXTRA)`
+  实现`BeanExtraTransformer`,覆写`customTransform(List<SOURCE>, List<TARGET>, EXTRA)`

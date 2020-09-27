@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.github.clinker.commons.upload.model.AccessProperties;
+import com.github.clinker.commons.upload.UploadProperties;
 import com.github.clinker.commons.upload.model.UploadResult;
 
 /**
@@ -17,8 +17,8 @@ public interface UploadService {
 	 *
 	 * @param request          请求
 	 * @param file             被上传的文件
-	 * @param accessProperties 访问配置
+	 * @param uploadProperties 上传配置
 	 * @return 上传结果
 	 */
-	UploadResult upload(HttpServletRequest request, MultipartFile file, AccessProperties accessProperties);
+	UploadResult upload(HttpServletRequest request, MultipartFile file, UploadProperties uploadProperties);
 }

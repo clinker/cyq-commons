@@ -13,8 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.github.clinker.commons.upload.directory.DirectoryStrategy;
-import com.github.clinker.commons.upload.model.AccessProperties;
-import com.github.clinker.commons.upload.model.UploadProperties;
 import com.github.clinker.commons.upload.name.DefaultFileExtensionStrategy;
 import com.github.clinker.commons.upload.name.ExtensionStrategy;
 import com.github.clinker.commons.upload.name.FilenameStrategy;
@@ -30,7 +28,7 @@ import com.github.clinker.commons.util.id.IdGeneratorByUuid;
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnClass(MultipartFileWriter.class)
-@EnableConfigurationProperties({ AccessProperties.class, UploadProperties.class })
+@EnableConfigurationProperties(UploadProperties.class)
 @ConditionalOnProperty(prefix = "cyq.upload", name = "enabled", havingValue = "true", matchIfMissing = false)
 public class CyqUploadAutoConfiguration {
 

@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.clinker.commons.upload.UploadProperties;
 import com.github.clinker.commons.upload.WebPathUtils;
-import com.github.clinker.commons.upload.model.AccessProperties;
 import com.github.clinker.commons.upload.model.LocalPathResult;
 import com.github.clinker.commons.upload.model.UploadResult;
 import com.github.clinker.commons.upload.service.UploadService;
@@ -29,7 +29,7 @@ public class MultipartFileUploadService implements UploadService {
 
 	@Override
 	public UploadResult upload(final HttpServletRequest request, final MultipartFile file,
-			final AccessProperties accessProperties) {
+			final UploadProperties uploadProperties) {
 		log.trace("Uploading file: {}, {} bytes", file.getOriginalFilename(), file.getSize());
 
 		final long size = file.getSize();
@@ -43,7 +43,7 @@ public class MultipartFileUploadService implements UploadService {
 				.toString());
 
 		return new UploadResult(pathResult.getOriginalFilename(), path,
-				WebPathUtils.getFileUri(request, accessProperties.getUriPrefix(), path), file.getOriginalFilename(),
+				WebPathUtils.getFileUri(request, uploadProperties.getUriPrefix(), path), file.getOriginalFilename(),
 				pathResult.getFilename(), size, pathResult.getPath());
 	}
 

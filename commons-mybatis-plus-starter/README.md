@@ -15,4 +15,4 @@ MyBatis Plus Spring Boot Starter。
   `PageBeanTransformerUtils.transform(IPage<SOURCE>, Class<TARGET>)`
 
 - 定制  
-  实现`PageBeanTransformer`,覆写  `transform(IPage<SOURCE>)`
+  实现`PageBeanTransformer`,覆写`transform(IPage<SOURCE>)`

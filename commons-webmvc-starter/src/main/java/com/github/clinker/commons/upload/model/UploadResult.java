@@ -2,6 +2,8 @@ package com.github.clinker.commons.upload.model;
 
 import java.nio.file.Path;
 
+import com.github.clinker.commons.upload.UploadProperties;
+
 /**
  * 文件上传结果。
  */

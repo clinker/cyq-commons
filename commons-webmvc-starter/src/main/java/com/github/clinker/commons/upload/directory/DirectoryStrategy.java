@@ -2,7 +2,7 @@ package com.github.clinker.commons.upload.directory;
 
 import java.nio.file.Path;
 
-import com.github.clinker.commons.upload.model.UploadProperties;
+import com.github.clinker.commons.upload.UploadProperties;
 
 /**
  * 文件保存路径策略，相对于{@link UploadProperties}的<code>storagePath</code>。
