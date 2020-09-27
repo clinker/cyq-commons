@@ -64,9 +64,9 @@ fx:
 
 spring:
     servlet:
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 30MB
+      multipart:
+        max-file-size: 20MB
+        max-request-size: 30MB
 ```
 
 # 验证器

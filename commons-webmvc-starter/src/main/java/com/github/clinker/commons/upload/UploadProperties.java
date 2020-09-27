@@ -13,7 +13,7 @@ public class UploadProperties {
 	/**
 	 * 是否启用上传
 	 */
-	private final boolean enabled = false;
+	private boolean enabled = false;
 
 	/**
 	 * 存储路径，可以是相对路径或绝对路径
@@ -31,6 +31,14 @@ public class UploadProperties {
 
 	public String getUriPrefix() {
 		return uriPrefix;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public void setStoragePath(final String storagePath) {
