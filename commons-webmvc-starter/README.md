@@ -57,8 +57,9 @@ cyq.upload.enabled=true
 
 application.yml示例：
 ```
-fx:
+cyq:
   upload:
+    enabled: true
     storage-path: f:/upload
     uri-prefix: http://127.0.0.1/upload
 
