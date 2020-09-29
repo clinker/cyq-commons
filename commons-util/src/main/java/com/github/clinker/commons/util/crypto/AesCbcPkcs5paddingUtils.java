@@ -6,7 +6,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public final class AesCbcPkcs5paddingUtils {
+public class AesCbcPkcs5paddingUtils {
 
 	/**
 	 * AES解密。密钥长度128位，矢量长度128位。ECB/PKCS5Padding模式。

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 除复制Bean外，没有其他操作。
  */
-public final class BeanTransformerUtils {
+public class BeanTransformerUtils {
 
 	/**
 	 * 转换集合。

@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 /**
  * 除复制Bean外，没有其他操作。
  */
-public final class PageBeanTransformerUtils {
+public class PageBeanTransformerUtils {
 
 	/**
 	 * 转换分页。

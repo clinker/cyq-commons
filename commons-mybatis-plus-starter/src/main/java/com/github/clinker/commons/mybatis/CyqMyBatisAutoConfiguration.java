@@ -17,7 +17,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 /**
  * MyBatis Plus自动配置。
  */
-@Configuration()
+@Configuration
 @ConditionalOnClass(DataSource.class)
 public class CyqMyBatisAutoConfiguration {
 

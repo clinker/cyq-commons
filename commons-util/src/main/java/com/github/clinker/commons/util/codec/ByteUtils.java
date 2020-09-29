@@ -3,7 +3,7 @@ package com.github.clinker.commons.util.codec;
 /**
  * 字节、字节数组与其他数据类型的转换。
  */
-public final class ByteUtils {
+public class ByteUtils {
 
 	/**
 	 * Convert a byte array (or part thereof) into an integer. The byte array should

@@ -16,7 +16,7 @@ import java.util.Map;
 
 import javax.crypto.Cipher;
 
-public final class RsaUtils {
+public class RsaUtils {
 
 	private static final String KEY_ALGORITHM = "RSA";
 

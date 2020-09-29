@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 设置HttpServletResponse禁止缓存。
  */
-public final class ResponseNoCacheUtils {
+public class ResponseNoCacheUtils {
 
 	/**
 	 * 设置响应不缓存。

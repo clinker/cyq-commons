@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 /**
  * 时间为{@link LocalDateTime}或{@link LocalDate}，以字符串表示。
  */
-public final class LocalTimeUtils {
+public class LocalTimeUtils {
 
 	/**
 	 * 格式化本地日期。

@@ -24,9 +24,9 @@ public class DateTimeFormatters {
 
 	public static final DateTimeFormatter DATE_TIME = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
 
-	public static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	public static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern(DATE_PATTERN);
 
-	public static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm:ss");
+	public static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern(TIME_PATTERN);
 
 	private DateTimeFormatters() {
 

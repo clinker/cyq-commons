@@ -3,7 +3,7 @@ package com.github.clinker.commons.util.geo;
 /**
  * 距离工具类。
  */
-public final class DistanceUtils {
+public class DistanceUtils {
 
 	/**
 	 * 根据距离长短加上不同的单位。有两个单位：米和千米。小于1000则表示为米；否则，表示为千米，十分位四舍五入到百分位。例如800->800米， 1001

@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 /**
  * 地理工具类。
  */
-public final class GeoUtils {
+public class GeoUtils {
 
 	/**
 	 * 赤道半径，单位：米

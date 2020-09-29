@@ -5,7 +5,7 @@ import java.security.SecureRandom;
 /**
  * 随机工具类。
  */
-public final class RandomUtils {
+public class RandomUtils {
 
 	/**
 	 * 从source里生成length个随机字符串。

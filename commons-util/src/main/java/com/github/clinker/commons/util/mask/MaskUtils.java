@@ -3,7 +3,7 @@ package com.github.clinker.commons.util.mask;
 /**
  * 替换字符串里的字符。
  */
-public final class MaskUtils {
+public class MaskUtils {
 
 	/**
 	 * 将src里的字符替换为replacement。

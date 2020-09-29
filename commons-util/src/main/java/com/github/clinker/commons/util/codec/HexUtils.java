@@ -3,7 +3,7 @@ package com.github.clinker.commons.util.codec;
 /**
  * 16进制与字节数组的相互转换。
  */
-public final class HexUtils {
+public class HexUtils {
 
 	/**
 	 * 将字节数组转换成大写16进制字符串。

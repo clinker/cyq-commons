@@ -3,7 +3,7 @@ package com.github.clinker.commons.util.mask;
 /**
  * 隐藏手机号码中间5位。
  */
-public final class PhoneNumberMaskUtils {
+public class PhoneNumberMaskUtils {
 
 	/**
 	 * 替换字符串

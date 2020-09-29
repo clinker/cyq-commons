@@ -8,7 +8,7 @@ import java.time.temporal.TemporalAdjusters;
 /**
  * 日期工具类。
  */
-public final class DateUtils {
+public class DateUtils {
 
 	/**
 	 * 零点

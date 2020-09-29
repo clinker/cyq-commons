@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 /**
  * SQL参数工具类。
  */
-public final class SqlParamUtils {
+public class SqlParamUtils {
 
 	private static final String LIKE_ESCAPE = "/";
 

@@ -5,7 +5,7 @@ import java.time.Instant;
 /**
  * ISO 8601格式的时间转换。
  */
-public final class Iso8601TimeUtils {
+public class Iso8601TimeUtils {
 
 	/**
 	 * 格式化UTC时间。
@@ -44,5 +44,9 @@ public final class Iso8601TimeUtils {
 	 */
 	public static long toMilli(final String iso8601DateTime) {
 		return parse(iso8601DateTime).toEpochMilli();
+	}
+
+	private Iso8601TimeUtils() {
+
 	}
 }

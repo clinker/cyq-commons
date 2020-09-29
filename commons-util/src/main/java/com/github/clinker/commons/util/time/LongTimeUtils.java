@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 /**
  * 时间默认为本地时区，以长整数表示。
  */
-public final class LongTimeUtils {
+public class LongTimeUtils {
 
 	/**
 	 * 系统默认时区。
@@ -36,8 +36,7 @@ public final class LongTimeUtils {
 	 * @return 格式化后的时间
 	 */
 	public static String format(final long epochMilli, final ZoneId zoneId) {
-		return DateTimeFormatters.DATE_TIME
-				.format(ZonedDateTime.ofInstant(Instant.ofEpochMilli(epochMilli), zoneId));
+		return DateTimeFormatters.DATE_TIME.format(ZonedDateTime.ofInstant(Instant.ofEpochMilli(epochMilli), zoneId));
 	}
 
 	/**

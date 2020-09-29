@@ -11,7 +11,7 @@ import javax.crypto.spec.IvParameterSpec;
 /**
  * 3DES算法。
  */
-public final class TripleDesUtils {
+public class TripleDesUtils {
 
 	private static String TRIPPLE_DES = "DESede";
 

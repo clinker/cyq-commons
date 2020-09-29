@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 获取HTTP远程地址。
  */
-public final class RemoteAddressUtils {
+public class RemoteAddressUtils {
 
 	private static final Logger log = LoggerFactory.getLogger(RemoteAddressUtils.class);
 

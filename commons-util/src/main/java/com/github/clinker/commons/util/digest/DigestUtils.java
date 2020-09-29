@@ -30,7 +30,7 @@ import com.github.clinker.commons.util.codec.HexUtils;
  * Operations to simplify common {@link java.security.MessageDigest} tasks. This
  * class is immutable and thread-safe.
  */
-public final class DigestUtils {
+public class DigestUtils {
 
 	/**
 	 * UTF-8
