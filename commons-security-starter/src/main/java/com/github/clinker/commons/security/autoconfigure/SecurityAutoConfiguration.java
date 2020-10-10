@@ -2,6 +2,8 @@ package com.github.clinker.commons.security.autoconfigure;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -61,7 +63,7 @@ import lombok.AllArgsConstructor;
 public class SecurityAutoConfiguration {
 
 	@Configuration
-	static class AuthzConfiguration {
+	static class AuthzConfiguration implements InitializingBean {
 
 		@Autowired
 		private AuthPermissionRepository authPermissionRepository;
@@ -74,6 +76,14 @@ public class SecurityAutoConfiguration {
 
 		@Autowired
 		private ApplicationEventPublisher publisher;
+
+		@Override
+		public void afterPropertiesSet() throws Exception {
+			// 必须设置serviceId
+			if (StringUtils.isBlank(authzProperties.getServiceId())) {
+				throw new Exception("必须设置属性authz.serviceId");
+			}
+		}
 
 		@Bean
 		@ConditionalOnMissingBean

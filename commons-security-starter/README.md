@@ -12,6 +12,17 @@
 - 动态对URL进行授权，授权数据存在MySQL
 - 用ConcurrentHashMap缓存授权数据，并订阅redis消息，实现缓存刷新。发布刷新事件：`127.0.0.1:6379> publish authz:refresh 1`
 
+# 配置
+```
+auth:
+  token:
+    timeout: 4h
+    prefix: demo:auth
+authz:
+  service-id: demo
+  cache-topic: authz:refresh
+```
+
 # 会话
 ## 禁用Session
 
@@ -89,7 +100,7 @@ X-Auth-Token: e72b2bd1-0cb7-4f40-81b9-c7b6f4a36f4a
 - 超级角色允许访问所有URL
   
 # 数据库
-## 账号表`auth_account`
+## 账号表
 ```
 CREATE TABLE `auth_account` (
   `id` varchar(36) NOT NULL COMMENT 'ID',
@@ -106,7 +117,7 @@ CREATE TABLE `auth_account` (
 
 ```
 
-## 角色表`auth_role`
+## 角色表
 ```
 CREATE TABLE `auth_role` (
   `id` varchar(36) NOT NULL COMMENT 'ID',
