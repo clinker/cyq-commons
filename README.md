@@ -25,3 +25,4 @@
 # Spring Boot Starter
 - commons-mybatis-plus-starter：定制MyBatis Plus
 - commons-webmvc-starter：定制Spring MVC
+- commons-security-starter: Restful认证、动态授权

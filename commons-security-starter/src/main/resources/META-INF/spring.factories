@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.clinker.commons.security.autoconfigure.SecurityAutoConfiguration, \
+com.github.clinker.commons.security.autoconfigure.WebSecurityAutoConfiguration

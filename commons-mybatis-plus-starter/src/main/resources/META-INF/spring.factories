@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.clinker.commons.mybatis.CyqMyBatisAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.clinker.commons.mybatis.MyBatisAutoConfiguration

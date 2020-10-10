@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
  */
 @Configuration
 @ConditionalOnClass(DataSource.class)
-public class CyqMyBatisAutoConfiguration {
+public class MyBatisAutoConfiguration {
 
 	/**
 	 * MyBatis Plus配置。
