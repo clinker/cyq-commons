@@ -18,7 +18,7 @@ import com.github.clinker.commons.security.repository.AuthRoleRepository;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 实现Spring Security的{@link UserDetailsService}。
+ * 实现{@link UserDetailsService}。
  */
 @Slf4j
 public class AuthAccountUserDetailsServiceImpl implements UserDetailsService {

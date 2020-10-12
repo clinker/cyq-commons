@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.stereotype.Component;
 
 import com.github.clinker.commons.security.token.TokenProperties;
 import com.github.clinker.commons.security.token.TokenService;
@@ -17,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 注销时删除认证token。
  */
-@Component
 @AllArgsConstructor
 @Slf4j
 public class RestLogoutHandler implements LogoutHandler {

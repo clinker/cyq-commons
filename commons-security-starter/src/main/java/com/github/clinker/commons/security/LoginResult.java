@@ -13,12 +13,12 @@ import lombok.Data;
 public class LoginResult {
 
 	/**
-	 * 账号{@link AuthAccount}ID
+	 * 账号ID，{@link AuthAccount}
 	 */
 	private String accountId;
 
 	/**
-	 * 账号{@link AuthAccount}登录名
+	 * 账号登录名，{@link AuthAccount}
 	 */
 	private String username;
 

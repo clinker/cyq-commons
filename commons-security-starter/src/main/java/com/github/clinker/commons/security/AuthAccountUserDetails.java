@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * 账号实现的{@link UserDetails}。
+ * 实现{@link UserDetails}。
  */
 public class AuthAccountUserDetails implements UserDetails {
 
