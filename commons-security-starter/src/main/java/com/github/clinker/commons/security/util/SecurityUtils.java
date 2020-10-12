@@ -20,38 +20,26 @@ public class SecurityUtils {
 
 	public static Collection<? extends GrantedAuthority> getAuthorities() {
 		final AuthAccountUserDetails userDetails = getUserDetails();
-		if (userDetails == null) {
-			return null;
-		}
 
-		return userDetails.getAuthorities();
+		return userDetails == null ? null : userDetails.getAuthorities();
 	}
 
 	public static AuthAccountUserDetails getUserDetails() {
 		final Authentication auth = getAuthentication();
-		if (auth == null) {
-			return null;
-		}
 
-		return (AuthAccountUserDetails) auth.getPrincipal();
+		return auth == null ? null : (AuthAccountUserDetails) auth.getPrincipal();
 	}
 
-	public static String getUserId() {
+	public static String getAccountId() {
 		final AuthAccountUserDetails userDetails = getUserDetails();
-		if (userDetails == null) {
-			return null;
-		}
 
-		return userDetails.getId();
+		return userDetails == null ? null : userDetails.getId();
 	}
 
 	public static String getUsername() {
 		final AuthAccountUserDetails userDetails = getUserDetails();
-		if (userDetails == null) {
-			return null;
-		}
 
-		return userDetails.getUsername();
+		return userDetails == null ? null : userDetails.getUsername();
 	}
 
 	private SecurityUtils() {

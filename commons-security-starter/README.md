@@ -7,8 +7,8 @@
 - 客户端通过HTTP header传递token
 - 自定义`UserDetailsService`，从MySQL读取用户数据
 - RESTful请求和响应
-- 角色
-- 权限
+- 角色，`AuthRole`的`serviceId`对角色进行隔离
+- 权限，`AuthPermission`的`serviceId`对权限进行隔离
 - 动态对URL进行授权，授权数据存在MySQL
 - 用ConcurrentHashMap缓存授权数据，并订阅redis消息，实现缓存刷新。发布刷新事件：`127.0.0.1:6379> publish authz:refresh 1`
 
@@ -150,13 +150,14 @@ CREATE TABLE `auth_account_role` (
 ```
 CREATE TABLE `auth_permission` (
   `id` varchar(36) NOT NULL COMMENT 'ID',
+  `service_id` varchar(50) NOT NULL COMMENT '所属服务ID，即租户',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `url` varchar(50) NOT NULL COMMENT 'ANT风格URL',
   `method` varchar(50) NOT NULL COMMENT 'HTTP方法，逗号分隔，不区分大小写。*表示全部',
   `sort` int unsigned NOT NULL DEFAULT '0' COMMENT '排序，升序',
   `description` varchar(100) NOT NULL DEFAULT '' COMMENT '描述',
-  PRIMARY KEY (`id`) ,
-  UNIQUE KEY `udx_name` (`name`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `udx_service_name` (`service_id`,`name`)
 ) COMMENT='权限';
 ```
 
