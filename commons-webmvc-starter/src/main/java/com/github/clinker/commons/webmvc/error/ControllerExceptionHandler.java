@@ -86,7 +86,7 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(ServiceException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public Map<?, ?> handleServiceException(final ServiceException ex) {
-		log.error("Handle service exception: {}", ex.getMessage(), ex);
+		log.error("Handle service exception: {}. {}", ex.getMessage(), ex.getStackTrace()[0]);
 
 		return response(ex.getErrorCode(), ex.getMessage());
 	}
@@ -111,4 +111,5 @@ public class ControllerExceptionHandler {
 
 		return errorResponse;
 	}
+
 }
