@@ -2,7 +2,6 @@ package com.github.clinker.commons.security.autoconfigure;
 
 import java.util.Arrays;
 
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
@@ -32,7 +31,6 @@ import lombok.AllArgsConstructor;
  * Web安全配置。
  */
 @AllArgsConstructor
-@AutoConfigureAfter(SecurityAutoConfiguration.class)
 class WebSecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
 
 	private final AuthzProperties authzProperties;
