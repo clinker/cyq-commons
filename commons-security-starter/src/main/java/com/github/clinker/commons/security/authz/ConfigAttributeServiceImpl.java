@@ -54,6 +54,15 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 
 	@Override
 	public Collection<ConfigAttribute> findByFilterInvocation(FilterInvocation filterInvocation) {
+		// 是否忽略
+		final boolean ignored = authPermissionRepository.findAll(authzProperties.getServiceId())
+				.parallelStream()
+				.anyMatch(AuthPermission::getIgnored);
+		if (ignored) {
+			// 如果忽略，则返回空属性列表
+			return SecurityConfig.createList();
+		}
+
 		// 请求的URL匹配的权限ID列表
 		final Set<String> urlPermissionIds = authPermissionRepository.findAll(authzProperties.getServiceId())
 				.parallelStream()
@@ -104,7 +113,7 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 				.getMethod();
 		final String[] methods = StringUtils.split(permissionMethod, ",");
 		for (final String method : methods) {
-			if (method.trim()
+			if (method.strip()
 					.equalsIgnoreCase(httpMethod)) {
 				return true;
 			}

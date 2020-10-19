@@ -96,6 +96,7 @@ X-Auth-Token: e72b2bd1-0cb7-4f40-81b9-c7b6f4a36f4a
 - 权限是：URL + HTTP method
     + HTTP method：逗号分隔，不区分大小写，`*`表示全部
     + 所有URL均要求
+- 不检查认证和授权的URL，则设置`ignored`为`true`
 - 角色关联权限
 - 超级角色允许访问所有URL
   
@@ -154,6 +155,7 @@ CREATE TABLE `auth_permission` (
   `name` varchar(50) NOT NULL COMMENT '名称',
   `url` varchar(50) NOT NULL COMMENT 'ANT风格URL',
   `method` varchar(50) NOT NULL COMMENT 'HTTP方法，逗号分隔，不区分大小写。*表示全部',
+  `ignored` tinyint NOT NULL DEFAULT '0' COMMENT '不检查认证和授权',
   `sort` int unsigned NOT NULL DEFAULT '0' COMMENT '排序，升序',
   `description` varchar(100) NOT NULL DEFAULT '' COMMENT '描述',
   PRIMARY KEY (`id`),

@@ -23,6 +23,7 @@ public class AuthPermissionRepositoryImpl implements AuthPermissionRepository {
 		permission.setName(rs.getString(index++));
 		permission.setUrl(rs.getString(index++));
 		permission.setMethod(rs.getString(index++));
+		permission.setIgnored(rs.getBoolean(index++));
 		permission.setSort(rs.getInt(index++));
 		permission.setDescription(rs.getString(index++));
 
@@ -37,7 +38,7 @@ public class AuthPermissionRepositoryImpl implements AuthPermissionRepository {
 
 	@Override
 	public List<AuthPermission> findAll(String serviceId) {
-		final String sql = "SELECT id,name,url,method,sort,description FROM auth_permission WHERE service_id=?";
+		final String sql = "SELECT id,name,url,method,ignored,sort,description FROM auth_permission WHERE service_id=?";
 
 		return jdbcTemplate.query(sql, new Object[] { serviceId }, authPermissionMapper);
 	}

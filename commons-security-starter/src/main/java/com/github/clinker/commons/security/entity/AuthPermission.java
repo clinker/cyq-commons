@@ -38,6 +38,11 @@ public class AuthPermission {
 	private String method;
 
 	/**
+	 * 不检查认证和授权
+	 */
+	private Boolean ignored;
+
+	/**
 	 * 排序，升序
 	 */
 	private Integer sort;
