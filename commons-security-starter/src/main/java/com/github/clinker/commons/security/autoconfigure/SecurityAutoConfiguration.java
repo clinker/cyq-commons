@@ -100,11 +100,13 @@ class SecurityAutoConfiguration {
 		@Bean
 		public RedisMessageListenerContainer redisContainer(RedisConnectionFactory connectionFactory) {
 			final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-
 			container.setConnectionFactory(connectionFactory);
-			container.addMessageListener(
-					new MessageListenerAdapter(new AuthzRefreshEventReceiver(publisher), "receive"),
-					new ChannelTopic(authzProperties.getCacheTopic()));
+
+			final MessageListenerAdapter adapter = new MessageListenerAdapter(new AuthzRefreshEventReceiver(publisher),
+					"receive");
+			adapter.afterPropertiesSet();
+
+			container.addMessageListener(adapter, new ChannelTopic(authzProperties.getCacheTopic()));
 
 			return container;
 		}
@@ -120,6 +122,7 @@ class SecurityAutoConfiguration {
 		public UrlPermissionSecurityMetadataSource urlPermissionSecurityMetadataSource() {
 			return new UrlPermissionSecurityMetadataSource(authzCacheService());
 		}
+
 	}
 
 	private final DataSource dataSource;
@@ -208,4 +211,5 @@ class SecurityAutoConfiguration {
 	public UserDetailsService userDetailsService() {
 		return new AuthAccountUserDetailsServiceImpl(authAccountRepository(), authRoleRepository());
 	}
+
 }

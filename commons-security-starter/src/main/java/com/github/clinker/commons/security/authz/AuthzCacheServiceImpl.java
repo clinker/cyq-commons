@@ -54,16 +54,13 @@ public class AuthzCacheServiceImpl implements AuthzCacheService {
 
 	@Override
 	public void clear() {
-		log.info("clear authz cache");
+		log.info("Clear authz cache");
 
 		filterInvocationCache.clear();
 
 		superRoleIdentifierCache.clear();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Collection<ConfigAttribute> findByFilterInvocation(FilterInvocation filterInvocation) {
 		return filterInvocationCache.computeIfAbsent(

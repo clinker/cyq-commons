@@ -17,7 +17,8 @@ public class AuthzRefreshEventReceiver {
 	}
 
 	public void receive(String message) {
-		log.info("receive authz refresh message");
+		log.info("Receive authz refresh message");
 		publisher.publishEvent(new AuthzRefreshEvent(message));
 	}
+
 }

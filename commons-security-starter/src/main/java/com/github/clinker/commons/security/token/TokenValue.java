@@ -24,4 +24,5 @@ public class TokenValue {
 	 * 对应UserDetails的authorities
 	 */
 	private Set<String> authorities;
+
 }

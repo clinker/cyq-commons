@@ -32,4 +32,5 @@ public class GrantedAuthorityConverter {
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.toSet());
 	}
+
 }

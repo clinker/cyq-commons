@@ -56,4 +56,5 @@ public class AuthAccountUserDetailsServiceImpl implements UserDetailsService {
 		return new AuthAccountUserDetails(account.getId(), account.getUsername(), account.getPassword(),
 				grantedAuthorities);
 	}
+
 }

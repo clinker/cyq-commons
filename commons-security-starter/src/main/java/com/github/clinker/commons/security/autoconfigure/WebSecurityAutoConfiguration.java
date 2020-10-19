@@ -20,7 +20,6 @@ import com.github.clinker.commons.security.RestAccessDeniedHandler;
 import com.github.clinker.commons.security.RestAuthenticationFailureHandler;
 import com.github.clinker.commons.security.RestAuthenticationSuccessHandler;
 import com.github.clinker.commons.security.RestLogoutHandler;
-import com.github.clinker.commons.security.authz.AuthzProperties;
 import com.github.clinker.commons.security.authz.UrlAccessDecisionVoter;
 import com.github.clinker.commons.security.authz.UrlPermissionSecurityMetadataSource;
 import com.github.clinker.commons.security.token.TokenAuthenticationFilter;
@@ -32,8 +31,6 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 class WebSecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
-
-	private final AuthzProperties authzProperties;
 
 	private final ObjectMapper objectMapper;
 
@@ -58,6 +55,20 @@ class WebSecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
+				.authorizeRequests()
+				.anyRequest()
+				.authenticated()
+				.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+
+					@Override
+					public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
+						fsi.setSecurityMetadataSource(urlPermissionSecurityMetadataSource);
+						fsi.setAccessDecisionManager(new AffirmativeBased(Arrays.asList(urlAccessDecisionVoter)));
+						return fsi;
+					}
+
+				})
+				.and()
 				.exceptionHandling()
 				.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)) // 未登录
 				.accessDeniedHandler(restAccessDeniedHandler)// 已登录，无权限
@@ -67,25 +78,6 @@ class WebSecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
 				.logout()
 				.addLogoutHandler(restLogoutHandler)
 				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
-
-		if (authzProperties != null && authzProperties.isEnabled()) {
-			http.authorizeRequests()
-					.anyRequest()
-					.authenticated()
-					.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-
-						@Override
-						public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
-							fsi.setSecurityMetadataSource(urlPermissionSecurityMetadataSource);
-							fsi.setAccessDecisionManager(new AffirmativeBased(Arrays.asList(urlAccessDecisionVoter)));
-							return fsi;
-						}
-					});
-		} else {
-			http.authorizeRequests()
-					.anyRequest()
-					.authenticated();
-		}
 
 		// 用重写的Filter替换掉原有的UsernamePasswordAuthenticationFilter
 		final LoginFormAuthenticationFilter filter = new LoginFormAuthenticationFilter(objectMapper);

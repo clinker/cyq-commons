@@ -44,7 +44,8 @@ public class LoginFormAuthenticationFilter extends AbstractAuthenticationProcess
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		if (postOnly && !request.getMethod().equals("POST")) {
+		if (postOnly && !request.getMethod()
+				.equals("POST")) {
 			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
 		}
 
@@ -128,4 +129,5 @@ public class LoginFormAuthenticationFilter extends AbstractAuthenticationProcess
 		Assert.hasText(usernameParameter, "Username parameter must not be empty or null");
 		this.usernameParameter = usernameParameter;
 	}
+
 }

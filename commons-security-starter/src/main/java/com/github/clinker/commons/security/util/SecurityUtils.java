@@ -45,4 +45,5 @@ public class SecurityUtils {
 	private SecurityUtils() {
 
 	}
+
 }

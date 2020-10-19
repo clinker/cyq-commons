@@ -22,8 +22,8 @@ import com.github.clinker.commons.util.exception.ForbiddenError;
 @Component
 public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
-	private static final Map<?, ?> FORBIDDEN = Map
-			.of(ErrorUtils.CODE, ForbiddenError.FORBIDDEN.getErrorCode(), ErrorUtils.MESSAGE, "没有权限");
+	private static final Map<?, ?> FORBIDDEN = Map.of(ErrorUtils.CODE, ForbiddenError.FORBIDDEN.getErrorCode(),
+			ErrorUtils.MESSAGE, "没有权限");
 
 	private final ObjectMapper objectMapper;
 
