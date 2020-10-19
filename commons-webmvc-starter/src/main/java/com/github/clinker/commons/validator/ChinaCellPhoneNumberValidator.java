@@ -13,10 +13,6 @@ public class ChinaCellPhoneNumberValidator implements ConstraintValidator<ChinaC
 	private static final Pattern PATTERN = Pattern.compile("^1\\d{10}$");
 
 	@Override
-	public void initialize(final ChinaCellPhoneNumberConstraint contactNumber) {
-	}
-
-	@Override
 	public boolean isValid(final String phoneNumber, final ConstraintValidatorContext cxt) {
 		if (phoneNumber == null || phoneNumber.isEmpty()) {
 			return false;
