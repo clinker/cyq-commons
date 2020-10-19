@@ -109,8 +109,8 @@ CREATE TABLE `auth_account` (
   `password` varchar(80) NOT NULL COMMENT '登录密码',
   `avatar` varchar(500) NOT NULL DEFAULT '' COMMENT '头像路径，本地UNIX格式或URI',
   `description` varchar(100) NOT NULL DEFAULT '' COMMENT '描述',
-  `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `updated_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  `creation_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `modified_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   `deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `udx_username` (`username`)
@@ -128,7 +128,7 @@ CREATE TABLE `auth_role` (
   `super_role` tinyint NOT NULL DEFAULT '0' COMMENT '是否是超级用户',
   `sort` int unsigned NOT NULL DEFAULT '0' COMMENT '排序，升序',
   `description` varchar(100) NOT NULL DEFAULT '' COMMENT '描述',
-  `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `creation_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `udx_service_id_identifier` (`service_id`,`identifier`)
 ) COMMENT='角色';

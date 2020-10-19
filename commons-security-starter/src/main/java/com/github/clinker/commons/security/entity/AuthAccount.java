@@ -43,12 +43,12 @@ public class AuthAccount {
 	/**
 	 * 创建时间
 	 */
-	private LocalDateTime createdTime;
+	private LocalDateTime creationTime;
 
 	/**
 	 * 修改时间
 	 */
-	private LocalDateTime updatedTime;
+	private LocalDateTime modifiedTime;
 
 	/**
 	 * 是否已删除
