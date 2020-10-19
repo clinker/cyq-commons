@@ -47,7 +47,6 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 
 	public ConfigAttributeServiceImpl(AuthPermissionRepository authPermissionRepository,
 			AuthRoleRepository authRoleRepository, AuthzProperties authzProperties) {
-		super();
 		this.authPermissionRepository = authPermissionRepository;
 		this.authRoleRepository = authRoleRepository;
 		this.authzProperties = authzProperties;

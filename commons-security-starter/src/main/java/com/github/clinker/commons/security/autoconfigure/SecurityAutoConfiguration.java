@@ -60,7 +60,7 @@ import lombok.AllArgsConstructor;
 @AutoConfigureAfter({ JacksonAutoConfiguration.class, DataSourceAutoConfiguration.class, RedisAutoConfiguration.class })
 @EnableConfigurationProperties({ TokenProperties.class, AuthzProperties.class })
 @AllArgsConstructor
-public class SecurityAutoConfiguration {
+class SecurityAutoConfiguration {
 
 	@Configuration
 	static class AuthzConfiguration implements InitializingBean {
@@ -181,7 +181,7 @@ public class SecurityAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public RestLogoutHandler restLogoutSuccessHandler() {
+	public RestLogoutHandler restLogoutHandler() {
 		return new RestLogoutHandler(tokenProperties, tokenService());
 	}
 

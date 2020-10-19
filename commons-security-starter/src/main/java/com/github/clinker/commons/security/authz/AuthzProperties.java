@@ -12,6 +12,11 @@ import lombok.Data;
 public class AuthzProperties {
 
 	/**
+	 * 是否启用
+	 */
+	private boolean enabled = true;
+
+	/**
 	 * 所属服务ID，即租户
 	 */
 	private String serviceId;
