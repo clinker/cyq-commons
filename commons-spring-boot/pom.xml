@@ -19,6 +19,8 @@
 	</dependencies>
 
 	<build>
+		<!-- 不要版本号 -->
+		<finalName>${artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
