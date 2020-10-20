@@ -124,12 +124,18 @@ public class RedisSmsVerifyCodeManager implements SmsVerifyCodeManager {
 		}
 
 		final String verifyCode = (String) list.get(0);
+		if (verifyCode == null || verifyCode.isBlank()) {
+			return false;
+		}
 		if (userInputVerifyCode != null && userInputVerifyCode.equalsIgnoreCase(verifyCode)) {
 			delete(key);
 			return true;
 		}
 
-		final int used = (Integer) list.get(1);
+		if (list.get(1) == null) {// usded
+			return false;
+		}
+		final int used = Integer.parseInt((String) list.get(1));
 		if (used >= maxUsed - 1) {
 			log.debug("Exceed max used: {}", redisKey);
 			delete(key);
