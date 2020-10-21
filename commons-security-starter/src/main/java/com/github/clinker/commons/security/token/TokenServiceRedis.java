@@ -54,7 +54,7 @@ public class TokenServiceRedis implements TokenService {
 				.toSeconds();
 		final long seconds = stringRedisTemplate.getExpire(key);
 
-		if (seconds > timeout / 2) {
+		if (seconds < timeout / 2 && seconds > 0) {
 			// 过期时间超过了超时的一半，则延期
 			stringRedisTemplate.expire(key(token), tokenProperties.getTimeout());
 		}
