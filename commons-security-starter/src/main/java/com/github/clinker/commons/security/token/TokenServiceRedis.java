@@ -47,6 +47,20 @@ public class TokenServiceRedis implements TokenService {
 	}
 
 	@Override
+	public void extend(String token) {
+		final String key = key(token);
+
+		final long timeout = tokenProperties.getTimeout()
+				.toSeconds();
+		final long seconds = stringRedisTemplate.getExpire(key);
+
+		if (seconds > timeout / 2) {
+			// 过期时间超过了超时的一半，则延期
+			stringRedisTemplate.expire(key(token), tokenProperties.getTimeout());
+		}
+	}
+
+	@Override
 	public TokenValue findByToken(String token) {
 		final String json = stringRedisTemplate.opsForValue()
 				.get(key(token));

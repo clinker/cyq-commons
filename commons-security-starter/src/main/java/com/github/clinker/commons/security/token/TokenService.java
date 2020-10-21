@@ -17,6 +17,13 @@ public interface TokenService {
 	void delete(String token);
 
 	/**
+	 * 重置超时。
+	 *
+	 * @param token token
+	 */
+	void extend(String token);
+
+	/**
 	 * 查询值。
 	 *
 	 * @param token token

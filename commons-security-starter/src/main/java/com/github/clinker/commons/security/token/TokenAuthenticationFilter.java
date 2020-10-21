@@ -42,6 +42,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 			final TokenValue tokenValue = tokenService.findByToken(token);
 			if (tokenValue != null && SecurityContextHolder.getContext()
 					.getAuthentication() == null) {
+
+				// 延期
+				tokenService.extend(token);
+
 				final Collection<? extends GrantedAuthority> authorities = grantedAuthorityConverter
 						.decode(tokenValue.getAuthorities());
 				// 查询用户
