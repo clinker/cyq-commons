@@ -57,7 +57,8 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 		// 是否忽略
 		final boolean ignored = authPermissionRepository.findAll(authzProperties.getServiceId())
 				.parallelStream()
-				.anyMatch(AuthPermission::getIgnored);
+				.anyMatch(p -> antPathMatcher.match(p.getUrl(), filterInvocation.getRequestUrl())
+						&& Boolean.TRUE.equals(p.getIgnored()));
 		if (ignored) {
 			// 如果忽略，则返回空属性列表
 			return SecurityConfig.createList();
