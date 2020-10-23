@@ -15,9 +15,10 @@ public class ChinaCellPhoneNumberValidator implements ConstraintValidator<ChinaC
 	@Override
 	public boolean isValid(final String phoneNumber, final ConstraintValidatorContext cxt) {
 		if (phoneNumber == null || phoneNumber.isEmpty()) {
-			return false;
+			return true;
 		}
 		return PATTERN.matcher(phoneNumber)
 				.matches();
 	}
+
 }
