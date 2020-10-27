@@ -1,13 +1,12 @@
 package com.github.clinker.commons.http;
 
 import java.io.Closeable;
-
-import org.apache.hc.client5.http.entity.mime.Header;
+import java.util.Map;
 
 /**
- * HTTP操作。字符集均为UTF-8。
+ * HTTP操作。
  */
-interface HttpConn extends Closeable {
+public interface HttpConn extends Closeable {
 
 	/**
 	 * 将响应作为字符串。响应字符集由实现决定。
@@ -34,6 +33,6 @@ interface HttpConn extends Closeable {
 	 * @param headers 请求头
 	 * @return 响应字符串
 	 */
-	String post(String uri, String body, Header... headers);
+	String post(String uri, String body, Map<String, Object> headers);
 
 }
