@@ -32,6 +32,9 @@ AES加密和解密。密钥长度128位，矢量长度128位。CBC/PKCS5Padding�
 # id
 唯一ID算法。
 
+# idcard
+身份证号码。
+
 # normalizer
 数据规范化。
 
