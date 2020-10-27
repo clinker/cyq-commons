@@ -1,5 +1,6 @@
 package com.github.clinker.commons.http;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -10,7 +11,9 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.io.CloseMode;
@@ -105,34 +108,38 @@ public class HttpConnClient implements HttpConn {
 	}
 
 	@Override
-	public String post(final String uri, final String body) {
-		return post(uri, body, null);
-	}
+	public String post(final String uri, final HttpEntity entity, final Map<String, Object> headers) {
+		log.debug("Post uri with entity: {}", uri);
 
-	@Override
-	public String post(final String uri, final String body, final Map<String, Object> headers) {
-		log.debug("Post uri and body: {}, {}", uri, body);
+		final HttpPost post = new HttpPost(uri);
+		if (headers != null) {
+			headers.entrySet()
+					.forEach(entry -> post.setHeader(entry.getKey(), entry.getValue()));
+		}
+		post.setEntity(entity);
 
-		String responseString = null;
 		int httpStatus = HttpStatus.SC_OK;
+		String responseString = null;
+		CloseableHttpResponse response = null;
 
 		try {
-			final HttpPost post = new HttpPost(uri);
-			if (headers != null) {
-				headers.entrySet()
-						.forEach(entry -> post.setHeader(entry.getKey(), entry.getValue()));
-			}
-			post.setEntity(new StringEntity(body, DEFAULT_CHARSET));
-			final CloseableHttpResponse response = httpClient.execute(post);
+			response = httpClient.execute(post);
 			httpStatus = response.getCode();
 			responseString = EntityUtils.toString(response.getEntity(), DEFAULT_CHARSET);
-			try {
-				EntityUtils.consume(response.getEntity());
-			} finally {
-				response.close();
-			}
-		} catch (final Exception e) {
+			EntityUtils.consume(response.getEntity());
+		} catch (final IOException | ParseException e) {
 			log.error("Http post error", e);
+
+			throw new HttpException(e);
+
+		} finally {
+			try {
+				if (response != null) {
+					response.close();
+				}
+			} catch (final IOException e) {
+				// 忽略
+			}
 		}
 
 		if (httpStatus != HttpStatus.SC_OK) {
@@ -142,6 +149,16 @@ public class HttpConnClient implements HttpConn {
 
 		log.debug("Post response uri and body: {},{}", uri, responseString);
 		return responseString;
+	}
+
+	@Override
+	public String post(final String uri, final String body) {
+		return post(uri, body, null);
+	}
+
+	@Override
+	public String post(final String uri, final String body, final Map<String, Object> headers) {
+		return post(uri, new StringEntity(body, DEFAULT_CHARSET), headers);
 	}
 
 }
