@@ -34,6 +34,12 @@ call mvn clean install clean
 cd ..\commons-webmvc-starter
 call mvn clean install clean
 
+cd ..\commons-sms-verifycode-starter
+call mvn clean install clean
+
+cd ..\commons-security-starter
+call mvn clean install clean
+
 cd ..
 
 @pause
