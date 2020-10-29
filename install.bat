@@ -28,6 +28,9 @@ call mvn clean install clean
 cd ..\commons-transformer
 call mvn clean install clean
 
+cd ..\commons-http
+call mvn clean install clean
+
 cd ..\commons-mybatis-plus-starter
 call mvn clean install clean
 
