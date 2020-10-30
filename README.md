@@ -1,6 +1,9 @@
 # cyq-commons
 类库大全。
 
+# 依赖版本
+与Spring Boot保持一致。
+
 # POM/BOM
 ## 非Spring项目
 继承commons-version。
