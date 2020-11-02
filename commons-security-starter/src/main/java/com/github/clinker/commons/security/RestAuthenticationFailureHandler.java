@@ -34,7 +34,6 @@ public class RestAuthenticationFailureHandler implements AuthenticationFailureHa
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-		System.err.println(exception.getMessage());
 		objectMapper.writeValue(response.getOutputStream(), LOGIN_FAIL);
 	}
 
