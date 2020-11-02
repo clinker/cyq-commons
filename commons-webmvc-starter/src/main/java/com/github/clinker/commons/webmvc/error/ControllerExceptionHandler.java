@@ -3,7 +3,6 @@ package com.github.clinker.commons.webmvc.error;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -33,15 +32,18 @@ import lombok.extern.slf4j.Slf4j;
 public class ControllerExceptionHandler {
 
 	/**
-	 * 参数校验错误的{@link #MESSAGE}值，格式：message1;message2...messageN
+	 * 参数校验错误的{@link #MESSAGE}值。
 	 *
-	 * @param fieldErrors
-	 * @return
+	 * @param fieldErrors 错误列表
+	 * @return 第一个错误的消息
 	 */
 	private String fieldErrorToString(final List<FieldError> fieldErrors) {
-		return fieldErrors.stream()
-				.map(FieldError::getDefaultMessage)
-				.collect(Collectors.joining(";"));
+		if (fieldErrors == null || fieldErrors.isEmpty()) {
+			return "";
+		}
+
+		return fieldErrors.get(0)
+				.getDefaultMessage();
 	}
 
 	@ExceptionHandler(BindException.class)
