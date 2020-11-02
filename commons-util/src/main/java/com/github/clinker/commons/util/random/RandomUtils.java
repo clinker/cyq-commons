@@ -28,4 +28,5 @@ public class RandomUtils {
 	private RandomUtils() {
 
 	}
+
 }

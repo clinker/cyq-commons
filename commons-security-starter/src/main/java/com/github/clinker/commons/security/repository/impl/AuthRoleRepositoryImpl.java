@@ -29,7 +29,8 @@ public class AuthRoleRepositoryImpl implements AuthRoleRepository {
 		role.setSuperRole(rs.getBoolean(index++));
 		role.setSort(rs.getInt(index++));
 		role.setDescription(rs.getString(index++));
-		role.setCreationTime(rs.getTimestamp(index++).toLocalDateTime());
+		role.setCreationTime(rs.getTimestamp(index++)
+				.toLocalDateTime());
 
 		return role;
 	};
@@ -38,13 +39,13 @@ public class AuthRoleRepositoryImpl implements AuthRoleRepository {
 
 	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	public AuthRoleRepositoryImpl(DataSource dataSource) {
+	public AuthRoleRepositoryImpl(final DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
 	@Override
-	public List<AuthRole> findByAccountId(String accountId) {
+	public List<AuthRole> findByAccountId(final String accountId) {
 		final String sql = "SELECT r.id,r.name,r.identifier,r.super_role,r.sort,r.description,r.creation_time FROM auth_role AS r"
 				+ " INNER JOIN auth_account_role AS j ON r.id=j.role_id WHERE j.account_id=?";
 
@@ -52,18 +53,18 @@ public class AuthRoleRepositoryImpl implements AuthRoleRepository {
 	}
 
 	@Override
-	public List<AuthRole> findByPermissionIds(Collection<String> permissionIds) {
+	public List<AuthRole> findByPermissionIds(final Collection<String> permissionIds) {
 		final String sql = "SELECT r.id,r.name,r.identifier,r.super_role,r.sort,r.description,r.creation_time FROM auth_role AS r"
 				+ " INNER JOIN auth_role_permission AS rp ON r.id=rp.role_id WHERE rp.permission_id IN(:permissionIds)";
 
-		final Map<String, Object> paramMap = new HashMap<String, Object>(1);
+		final Map<String, Object> paramMap = new HashMap<>(1);
 		paramMap.put("permissionIds", permissionIds);
 
 		return namedParameterJdbcTemplate.query(sql, paramMap, authRoleMapper);
 	}
 
 	@Override
-	public List<AuthRole> findSuper(String serviceId) {
+	public List<AuthRole> findSuper(final String serviceId) {
 		final String sql = "SELECT id,name,identifier,super_role,sort,description,creation_time FROM auth_role WHERE service_id=? AND super_role=TRUE";
 
 		return jdbcTemplate.query(sql, new Object[] { serviceId }, authRoleMapper);

@@ -12,4 +12,5 @@ public interface Normalizer<T> {
 	 * @return 规范化后的数据
 	 */
 	T normalize(T obj);
+
 }

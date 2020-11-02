@@ -106,4 +106,5 @@ public interface BeanExtraTransformer<SOURCE, TARGET, EXTRA> {
 	default TARGET transform(final SOURCE source, final EXTRA extra) {
 		return copyProperties(source, extra);
 	}
+
 }

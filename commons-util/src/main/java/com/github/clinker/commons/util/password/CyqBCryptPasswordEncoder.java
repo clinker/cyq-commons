@@ -87,4 +87,5 @@ public class CyqBCryptPasswordEncoder implements CyqPasswordEncoder {
 
 		return BCrypt.checkpw(rawPassword.toString(), encodedPassword);
 	}
+
 }

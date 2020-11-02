@@ -8,8 +8,9 @@ import java.util.UUID;
 public class TokenGeneratorUuid implements TokenGenerator {
 
 	@Override
-	public String generate(Object principal) {
-		return UUID.randomUUID().toString();
+	public String generate(final Object principal) {
+		return UUID.randomUUID()
+				.toString();
 	}
 
 }

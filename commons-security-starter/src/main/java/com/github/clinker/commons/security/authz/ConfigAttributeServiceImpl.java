@@ -40,20 +40,23 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 	/**
 	 * 随机角色标识，用于避免返回空集合
 	 */
-	private final Collection<ConfigAttribute> RANDOM = SecurityConfig
-			.createList("ROLE_" + UUID.randomUUID().toString() + Instant.now().toEpochMilli());
+	private final Collection<ConfigAttribute> RANDOM = SecurityConfig.createList("ROLE_" + UUID.randomUUID()
+			.toString()
+			+ Instant.now()
+					.toEpochMilli());
 
-	public ConfigAttributeServiceImpl(AuthPermissionRepository authPermissionRepository,
-			AuthRoleRepository authRoleRepository, AuthzProperties authzProperties) {
+	public ConfigAttributeServiceImpl(final AuthPermissionRepository authPermissionRepository,
+			final AuthRoleRepository authRoleRepository, final AuthzProperties authzProperties) {
 		this.authPermissionRepository = authPermissionRepository;
 		this.authRoleRepository = authRoleRepository;
 		this.authzProperties = authzProperties;
 	}
 
 	@Override
-	public Collection<ConfigAttribute> findByFilterInvocation(FilterInvocation filterInvocation) {
+	public Collection<ConfigAttribute> findByFilterInvocation(final FilterInvocation filterInvocation) {
 		// 是否忽略
-		final boolean ignored = authPermissionRepository.findAll(authzProperties.getServiceId()).parallelStream()
+		final boolean ignored = authPermissionRepository.findAll(authzProperties.getServiceId())
+				.parallelStream()
 				.anyMatch(p -> antPathMatcher.match(p.getUrl(), filterInvocation.getRequestUrl())
 						&& Boolean.TRUE.equals(p.getIgnored()));
 		if (ignored) {
@@ -63,8 +66,10 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 
 		// 请求的URL匹配的权限ID列表
 		final Set<String> urlPermissionIds = authPermissionRepository.findAll(authzProperties.getServiceId())
-				.parallelStream().filter(permission -> isUrlAllowed(permission, filterInvocation))
-				.map(AuthPermission::getId).collect(Collectors.toSet());
+				.parallelStream()
+				.filter(permission -> isUrlAllowed(permission, filterInvocation))
+				.map(AuthPermission::getId)
+				.collect(Collectors.toSet());
 		if (urlPermissionIds == null || urlPermissionIds.isEmpty()) {
 			return handleAbsentUrl();
 		}
@@ -76,7 +81,9 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 		}
 
 		// 角色标识集合列表
-		final String[] attrs = roles.parallelStream().map(AuthRole::getIdentifier).collect(Collectors.toSet())
+		final String[] attrs = roles.parallelStream()
+				.map(AuthRole::getIdentifier)
+				.collect(Collectors.toSet())
 				.toArray(new String[0]);
 		return attrs.length == 0 ? handleAbsentUrl() : SecurityConfig.createList(attrs);
 	}
@@ -90,7 +97,7 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 		return RANDOM;
 	}
 
-	private boolean isUrlAllowed(AuthPermission permission, FilterInvocation filterInvocation) {
+	private boolean isUrlAllowed(final AuthPermission permission, final FilterInvocation filterInvocation) {
 		// URL不匹配
 		if (!antPathMatcher.match(permission.getUrl(), filterInvocation.getRequestUrl())) {
 			return false;
@@ -103,10 +110,12 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 			return true;
 		}
 
-		final String httpMethod = filterInvocation.getHttpRequest().getMethod();
+		final String httpMethod = filterInvocation.getHttpRequest()
+				.getMethod();
 		final String[] methods = StringUtils.split(permissionMethod, ",");
 		for (final String method : methods) {
-			if (method.strip().equalsIgnoreCase(httpMethod)) {
+			if (method.strip()
+					.equalsIgnoreCase(httpMethod)) {
 				return true;
 			}
 		}

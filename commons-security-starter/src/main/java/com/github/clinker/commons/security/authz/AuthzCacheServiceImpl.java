@@ -45,8 +45,8 @@ public class AuthzCacheServiceImpl implements AuthzCacheService {
 	 */
 	private final Map<String, Set<String>> superRoleIdentifierCache = new ConcurrentHashMap<>();
 
-	public AuthzCacheServiceImpl(AuthRoleRepository authRoleRepository, AuthzProperties authzProperties,
-			ConfigAttributeService configAttributeService) {
+	public AuthzCacheServiceImpl(final AuthRoleRepository authRoleRepository, final AuthzProperties authzProperties,
+			final ConfigAttributeService configAttributeService) {
 		this.authRoleRepository = authRoleRepository;
 		this.authzProperties = authzProperties;
 		this.configAttributeService = configAttributeService;
@@ -62,9 +62,10 @@ public class AuthzCacheServiceImpl implements AuthzCacheService {
 	}
 
 	@Override
-	public Collection<ConfigAttribute> findByFilterInvocation(FilterInvocation filterInvocation) {
-		return filterInvocationCache.computeIfAbsent(new FilterInvocationCacheKey(filterInvocation.getRequestUrl(),
-				filterInvocation.getHttpRequest().getMethod()),
+	public Collection<ConfigAttribute> findByFilterInvocation(final FilterInvocation filterInvocation) {
+		return filterInvocationCache.computeIfAbsent(
+				new FilterInvocationCacheKey(filterInvocation.getRequestUrl(), filterInvocation.getHttpRequest()
+						.getMethod()),
 				filterInvocationCacheKey -> configAttributeService.findByFilterInvocation(filterInvocation));
 	}
 
@@ -73,7 +74,9 @@ public class AuthzCacheServiceImpl implements AuthzCacheService {
 		return superRoleIdentifierCache.computeIfAbsent(AUTHZ_SUPER_ROLE_IDENTIFIER, key -> {
 			final List<AuthRole> superRoles = authRoleRepository.findSuper(authzProperties.getServiceId());
 			if (superRoles != null) {
-				return superRoles.parallelStream().map(AuthRole::getIdentifier).collect(Collectors.toSet());
+				return superRoles.parallelStream()
+						.map(AuthRole::getIdentifier)
+						.collect(Collectors.toSet());
 			} else {
 				return Collections.emptySet();
 			}
@@ -86,7 +89,7 @@ public class AuthzCacheServiceImpl implements AuthzCacheService {
 	 * @param event 授权缓存刷新事件
 	 */
 	@EventListener
-	public void refresh(AuthzRefreshEvent event) {
+	public void refresh(final AuthzRefreshEvent event) {
 		clear();
 	}
 

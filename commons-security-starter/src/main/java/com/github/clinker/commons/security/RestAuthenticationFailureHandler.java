@@ -24,16 +24,17 @@ public class RestAuthenticationFailureHandler implements AuthenticationFailureHa
 
 	private final ObjectMapper objectMapper;
 
-	public RestAuthenticationFailureHandler(ObjectMapper objectMapper) {
+	public RestAuthenticationFailureHandler(final ObjectMapper objectMapper) {
 		this.objectMapper = objectMapper;
 	}
 
 	@Override
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException exception) throws IOException, ServletException {
+	public void onAuthenticationFailure(final HttpServletRequest request, final HttpServletResponse response,
+			final AuthenticationException exception) throws IOException, ServletException {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
+		System.err.println(exception.getMessage());
 		objectMapper.writeValue(response.getOutputStream(), LOGIN_FAIL);
 	}
 

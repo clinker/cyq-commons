@@ -41,9 +41,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		String token = request.getHeader(tokenProperties.getHeader());
 
 		if (StringUtils.isNotBlank(token)) {
-			token = StringUtils.removeStartIgnoreCase(token, tokenProperties.getHeaderValuePrefix()).trim();
+			token = StringUtils.removeStartIgnoreCase(token, tokenProperties.getHeaderValuePrefix())
+					.trim();
 			final TokenValue tokenValue = tokenService.findByToken(token);
-			if (tokenValue != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+			if (tokenValue != null && SecurityContextHolder.getContext()
+					.getAuthentication() == null) {
 
 				// 延期
 				tokenService.extend(token);
@@ -52,19 +54,16 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 						.decode(tokenValue.getAuthorities());
 				// 查询用户
 				final AuthAccountUserDetails userDetails = new AuthAccountUserDetails(tokenValue.getAccountId(),
-						tokenValue.getUsername(),
-						""/* password */,
-						authorities);
+						tokenValue.getUsername(), ""/* password */, authorities);
 
 				final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-						userDetails,
-						userDetails.getPassword(),
-						authorities);
+						userDetails, userDetails.getPassword(), authorities);
 
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
 				// 认证成功
-				SecurityContextHolder.getContext().setAuthentication(authentication);
+				SecurityContextHolder.getContext()
+						.setAuthentication(authentication);
 			}
 		}
 

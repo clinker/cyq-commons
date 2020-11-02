@@ -97,4 +97,5 @@ public class GeoUtils {
 	private GeoUtils() {
 
 	}
+
 }

@@ -32,12 +32,12 @@ public class AuthPermissionRepositoryImpl implements AuthPermissionRepository {
 
 	private final JdbcTemplate jdbcTemplate;
 
-	public AuthPermissionRepositoryImpl(DataSource dataSource) {
+	public AuthPermissionRepositoryImpl(final DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
 	@Override
-	public List<AuthPermission> findAll(String serviceId) {
+	public List<AuthPermission> findAll(final String serviceId) {
 		final String sql = "SELECT id,name,url,method,ignored,sort,description FROM auth_permission WHERE service_id=?";
 
 		return jdbcTemplate.query(sql, new Object[] { serviceId }, authPermissionMapper);

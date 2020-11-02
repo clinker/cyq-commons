@@ -22,12 +22,16 @@ public class WebPathUtils {
 
 		final StringBuilder uri = new StringBuilder();
 
-		if (uriPrefix == null || uriPrefix.trim().isEmpty()) {
+		if (uriPrefix == null || uriPrefix.trim()
+				.isEmpty()) {
 			final StringBuilder requestUriPrefix = new StringBuilder(50);
 
-			requestUriPrefix.append(request.getScheme()).append("://").append(request.getServerName());
+			requestUriPrefix.append(request.getScheme())
+					.append("://")
+					.append(request.getServerName());
 			if (request.getServerPort() != 80) {
-				requestUriPrefix.append(":").append(request.getServerPort());
+				requestUriPrefix.append(":")
+						.append(request.getServerPort());
 			}
 			requestUriPrefix.append(request.getContextPath());
 
@@ -57,10 +61,12 @@ public class WebPathUtils {
 	 * @return 上传文件的完整URI，例如：https://localhost/upload/2017/3/e07b88282ce5cd2e44c751b4b4944df9.jpg
 	 */
 	public static String toFullUri(final String uriPrefix, final String webPath) {
-		if (uriPrefix == null || uriPrefix.trim().isEmpty()) {
+		if (uriPrefix == null || uriPrefix.trim()
+				.isEmpty()) {
 			return "";
 		}
-		if (webPath == null || webPath.trim().isEmpty()) {
+		if (webPath == null || webPath.trim()
+				.isEmpty()) {
 			return "";
 		}
 

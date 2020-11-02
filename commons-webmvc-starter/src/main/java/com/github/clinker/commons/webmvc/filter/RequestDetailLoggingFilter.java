@@ -46,19 +46,27 @@ public class RequestDetailLoggingFilter extends AbstractRequestLoggingFilter {
 
 	@Override
 	protected String createMessage(final HttpServletRequest request, final String prefix, final String suffix) {
-		final String headers = Collections.list(request.getHeaderNames()).stream()
-				.map(name -> name + ":" + request.getHeader(name)).collect(Collectors.joining(", ", "{", "}"));
+		final String headers = Collections.list(request.getHeaderNames())
+				.stream()
+				.map(name -> name + ":" + request.getHeader(name))
+				.collect(Collectors.joining(", ", "{", "}"));
 
 		final StringBuilder msg = new StringBuilder();
 		msg.append('[');
 		final String clientAddr = RemoteAddressUtils.resolve(request);
 		if (clientAddr != null) {
-			msg.append("client=").append(clientAddr).append(';');
+			msg.append("client=")
+					.append(clientAddr)
+					.append(';');
 		}
-		msg.append("method=").append(request.getMethod());
-		msg.append(";content type=").append(request.getContentType());
-		msg.append(";encoding=").append(request.getCharacterEncoding());
-		msg.append(";headers=").append(headers);
+		msg.append("method=")
+				.append(request.getMethod());
+		msg.append(";content type=")
+				.append(request.getContentType());
+		msg.append(";encoding=")
+				.append(request.getCharacterEncoding());
+		msg.append(";headers=")
+				.append(headers);
 		msg.append(']');
 
 		return super.createMessage(request, prefix, suffix) + msg.toString();

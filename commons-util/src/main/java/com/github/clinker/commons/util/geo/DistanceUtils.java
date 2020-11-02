@@ -29,4 +29,5 @@ public class DistanceUtils {
 	private DistanceUtils() {
 
 	}
+
 }

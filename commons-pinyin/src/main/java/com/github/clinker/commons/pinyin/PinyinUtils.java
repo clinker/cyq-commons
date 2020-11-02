@@ -19,7 +19,8 @@ public class PinyinUtils {
 			sb.append(pinyin(c).charAt(0));
 		}
 
-		return sb.toString().toLowerCase();
+		return sb.toString()
+				.toLowerCase();
 	}
 
 	/**
@@ -39,7 +40,8 @@ public class PinyinUtils {
 	 * @return 小写拼音
 	 */
 	public static String pinyin(final char c) {
-		return Pinyin.toPinyin(c).toLowerCase();
+		return Pinyin.toPinyin(c)
+				.toLowerCase();
 	}
 
 	/**
@@ -49,7 +51,8 @@ public class PinyinUtils {
 	 * @return 小写拼音
 	 */
 	public static String pinyin(final String str) {
-		return Pinyin.toPinyin(str, "").toLowerCase();
+		return Pinyin.toPinyin(str, "")
+				.toLowerCase();
 	}
 
 	/**
@@ -60,7 +63,8 @@ public class PinyinUtils {
 	 * @return 小写拼音
 	 */
 	public static String pinyin(final String str, final String separator) {
-		return Pinyin.toPinyin(str, separator).toLowerCase();
+		return Pinyin.toPinyin(str, separator)
+				.toLowerCase();
 	}
 
 	private PinyinUtils() {

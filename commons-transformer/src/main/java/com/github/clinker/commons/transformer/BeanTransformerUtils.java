@@ -21,6 +21,7 @@ public class BeanTransformerUtils {
 			public Class<TARGET> targetClass() {
 				return targetClass;
 			}
+
 		}.transform(sources);
 	}
 
@@ -38,6 +39,7 @@ public class BeanTransformerUtils {
 			public Class<TARGET> targetClass() {
 				return targetClass;
 			}
+
 		}.transform(source);
 	}
 

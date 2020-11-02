@@ -88,21 +88,17 @@ class SecurityAutoConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		public AuthzCacheService authzCacheService() {
-			return new AuthzCacheServiceImpl(authRoleRepository,
-					authzProperties,
-					configAttributeService());
+			return new AuthzCacheServiceImpl(authRoleRepository, authzProperties, configAttributeService());
 		}
 
 		@Bean
 		@ConditionalOnMissingBean
 		public ConfigAttributeService configAttributeService() {
-			return new ConfigAttributeServiceImpl(authPermissionRepository,
-					authRoleRepository,
-					authzProperties);
+			return new ConfigAttributeServiceImpl(authPermissionRepository, authRoleRepository, authzProperties);
 		}
 
 		@Bean
-		public RedisMessageListenerContainer redisContainer(RedisConnectionFactory connectionFactory) {
+		public RedisMessageListenerContainer redisContainer(final RedisConnectionFactory connectionFactory) {
 			final RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 			container.setConnectionFactory(connectionFactory);
 
@@ -182,25 +178,20 @@ class SecurityAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RestAuthenticationSuccessHandler restAuthenticationSuccessHandler() {
-		return new RestAuthenticationSuccessHandler(grantedAuthorityConverter(),
-				objectMapper,
-				tokenProperties,
+		return new RestAuthenticationSuccessHandler(grantedAuthorityConverter(), objectMapper, tokenProperties,
 				tokenService());
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	public RestLogoutHandler restLogoutHandler() {
-		return new RestLogoutHandler(tokenProperties,
-				tokenService());
+		return new RestLogoutHandler(tokenProperties, tokenService());
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	public TokenAuthenticationFilter tokenAuthenticationFilter() {
-		return new TokenAuthenticationFilter(grantedAuthorityConverter(),
-				tokenProperties,
-				tokenService());
+		return new TokenAuthenticationFilter(grantedAuthorityConverter(), tokenProperties, tokenService());
 	}
 
 	@Bean
@@ -212,17 +203,13 @@ class SecurityAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public TokenService tokenService() {
-		return new TokenServiceRedis(objectMapper,
-				stringRedisTemplate,
-				tokenGenerator(),
-				tokenProperties);
+		return new TokenServiceRedis(objectMapper, stringRedisTemplate, tokenGenerator(), tokenProperties);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	public UserDetailsService userDetailsService() {
-		return new AuthAccountUserDetailsServiceImpl(authAccountRepository(),
-				authRoleRepository());
+		return new AuthAccountUserDetailsServiceImpl(authAccountRepository(), authRoleRepository());
 	}
 
 }

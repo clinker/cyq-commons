@@ -25,13 +25,15 @@ public class RestLogoutHandler implements LogoutHandler {
 	private final TokenService tokenService;
 
 	@Override
-	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+	public void logout(final HttpServletRequest request, final HttpServletResponse response,
+			final Authentication authentication) {
 		// 删除token
 		String token = request.getHeader(tokenProperties.getHeader());
 		log.debug("Logout, token: {}", token);
 
 		if (StringUtils.isNotBlank(token)) {
-			token = StringUtils.removeStart(token, tokenProperties.getHeaderValuePrefix()).trim();
+			token = StringUtils.removeStart(token, tokenProperties.getHeaderValuePrefix())
+					.trim();
 			tokenService.delete(token);
 		}
 	}

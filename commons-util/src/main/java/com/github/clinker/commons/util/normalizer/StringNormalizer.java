@@ -10,4 +10,5 @@ public class StringNormalizer extends CompositeNormalizer<String> {
 	public StringNormalizer() {
 		add(new NullToEmptyStringNormalizer()).add(new StripNormalizer());
 	}
+
 }

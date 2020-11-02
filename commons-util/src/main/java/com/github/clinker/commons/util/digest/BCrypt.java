@@ -632,4 +632,5 @@ public class BCrypt {
 			S[i + 1] = lr[1];
 		}
 	}
+
 }

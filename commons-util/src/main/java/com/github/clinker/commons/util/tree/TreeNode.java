@@ -27,4 +27,5 @@ public interface TreeNode<T extends TreeNode<T, ID>, ID> extends Comparable<T> {
 	 * @return 上级ID
 	 */
 	ID getParentId();
+
 }

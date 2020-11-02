@@ -39,7 +39,9 @@ public class ControllerExceptionHandler {
 	 * @return
 	 */
 	private String fieldErrorToString(final List<FieldError> fieldErrors) {
-		return fieldErrors.stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(";"));
+		return fieldErrors.stream()
+				.map(FieldError::getDefaultMessage)
+				.collect(Collectors.joining(";"));
 	}
 
 	@ExceptionHandler(BindException.class)
@@ -47,7 +49,8 @@ public class ControllerExceptionHandler {
 	public Map<?, ?> handleBindException(final BindException ex) {
 		log.error("Handle bind exception: {}", ex.getMessage());
 
-		return response(ValidationError.INVALID, fieldErrorToString(ex.getBindingResult().getFieldErrors()));
+		return response(ValidationError.INVALID, fieldErrorToString(ex.getBindingResult()
+				.getFieldErrors()));
 	}
 
 	@ExceptionHandler(Exception.class)
@@ -76,7 +79,8 @@ public class ControllerExceptionHandler {
 	public Map<?, ?> handleMethodArgumentNotValidException(final MethodArgumentNotValidException ex) {
 		log.error("Handle validation exception: {}", ex.getMessage());
 
-		return response(ValidationError.INVALID, fieldErrorToString(ex.getBindingResult().getFieldErrors()));
+		return response(ValidationError.INVALID, fieldErrorToString(ex.getBindingResult()
+				.getFieldErrors()));
 	}
 
 	@ExceptionHandler(ServiceException.class)

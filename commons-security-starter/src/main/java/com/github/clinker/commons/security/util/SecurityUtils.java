@@ -13,8 +13,15 @@ import com.github.clinker.commons.security.AuthAccountUserDetails;
  */
 public class SecurityUtils {
 
+	public static String getAccountId() {
+		final AuthAccountUserDetails userDetails = getUserDetails();
+
+		return userDetails == null ? null : userDetails.getId();
+	}
+
 	public static Authentication getAuthentication() {
-		return SecurityContextHolder.getContext().getAuthentication();
+		return SecurityContextHolder.getContext()
+				.getAuthentication();
 	}
 
 	public static Collection<? extends GrantedAuthority> getAuthorities() {
@@ -27,12 +34,6 @@ public class SecurityUtils {
 		final Authentication auth = getAuthentication();
 
 		return auth == null ? null : (AuthAccountUserDetails) auth.getPrincipal();
-	}
-
-	public static String getAccountId() {
-		final AuthAccountUserDetails userDetails = getUserDetails();
-
-		return userDetails == null ? null : userDetails.getId();
 	}
 
 	public static String getUsername() {

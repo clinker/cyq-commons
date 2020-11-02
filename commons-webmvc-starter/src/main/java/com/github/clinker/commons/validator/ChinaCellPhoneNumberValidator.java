@@ -17,7 +17,8 @@ public class ChinaCellPhoneNumberValidator implements ConstraintValidator<ChinaC
 		if (phoneNumber == null || phoneNumber.isEmpty()) {
 			return true;
 		}
-		return PATTERN.matcher(phoneNumber).matches();
+		return PATTERN.matcher(phoneNumber)
+				.matches();
 	}
 
 }

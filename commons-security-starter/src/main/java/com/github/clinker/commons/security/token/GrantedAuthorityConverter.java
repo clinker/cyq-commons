@@ -13,20 +13,24 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
  */
 public class GrantedAuthorityConverter {
 
-	public Collection<? extends GrantedAuthority> decode(Set<String> strings) {
+	public Collection<? extends GrantedAuthority> decode(final Set<String> strings) {
 		if (strings == null) {
 			return Collections.emptySet();
 		}
 
-		return strings.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+		return strings.stream()
+				.map(SimpleGrantedAuthority::new)
+				.collect(Collectors.toSet());
 	}
 
-	public Set<String> encode(Collection<? extends GrantedAuthority> authorities) {
+	public Set<String> encode(final Collection<? extends GrantedAuthority> authorities) {
 		if (authorities == null) {
 			return Collections.emptySet();
 		}
 
-		return authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+		return authorities.stream()
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.toSet());
 	}
 
 }

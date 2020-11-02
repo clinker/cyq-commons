@@ -40,7 +40,8 @@ public class TokenServiceRedis implements TokenService {
 			throw new RuntimeException(e);
 		}
 
-		stringRedisTemplate.opsForValue().set(key, json, tokenProperties.getTimeout());
+		stringRedisTemplate.opsForValue()
+				.set(key, json, tokenProperties.getTimeout());
 
 		return token;
 	}
@@ -54,7 +55,8 @@ public class TokenServiceRedis implements TokenService {
 	public void extend(final String token) {
 		final String key = key(token);
 
-		final long timeout = tokenProperties.getTimeout().toSeconds();
+		final long timeout = tokenProperties.getTimeout()
+				.toSeconds();
 		final long ttl = stringRedisTemplate.getExpire(key);
 
 		if (ttl < timeout / 2 && ttl > 0) {
@@ -65,7 +67,8 @@ public class TokenServiceRedis implements TokenService {
 
 	@Override
 	public TokenValue findByToken(final String token) {
-		final String json = stringRedisTemplate.opsForValue().get(key(token));
+		final String json = stringRedisTemplate.opsForValue()
+				.get(key(token));
 		if (StringUtils.isNotBlank(json)) {
 			try {
 				return objectMapper.readValue(json, TokenValue.class);

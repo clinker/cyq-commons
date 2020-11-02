@@ -42,4 +42,5 @@ public class ImageToBase64Utils {
 	private ImageToBase64Utils() {
 
 	}
+
 }

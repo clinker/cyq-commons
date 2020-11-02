@@ -505,4 +505,5 @@ public class DigestUtils {
 	private DigestUtils() {
 
 	}
+
 }

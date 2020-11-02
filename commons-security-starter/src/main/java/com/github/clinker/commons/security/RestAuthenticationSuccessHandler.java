@@ -47,13 +47,17 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 		final AuthAccountUserDetails userDetails = (AuthAccountUserDetails) authToken.getPrincipal();
 
 		// 生成并存储token
-		final String token = tokenService.create(userDetails,
-				TokenValue.builder().accountId(userDetails.getId()).username(userDetails.getUsername())
-						.authorities(grantedAuthorityConverter.encode(userDetails.getAuthorities())).build());
+		final String token = tokenService.create(userDetails, TokenValue.builder()
+				.accountId(userDetails.getId())
+				.username(userDetails.getUsername())
+				.authorities(grantedAuthorityConverter.encode(userDetails.getAuthorities()))
+				.build());
 
 		// 返回用户信息
-		final LoginResult result = LoginResult.builder().accountId(userDetails.getId())
-				.username(userDetails.getUsername()).build();
+		final LoginResult result = LoginResult.builder()
+				.accountId(userDetails.getId())
+				.username(userDetails.getUsername())
+				.build();
 
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
