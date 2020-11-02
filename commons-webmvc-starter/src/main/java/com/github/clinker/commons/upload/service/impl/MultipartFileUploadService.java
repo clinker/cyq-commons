@@ -38,13 +38,16 @@ public class MultipartFileUploadService implements UploadService {
 
 		log.trace("Local path result: {}", pathResult);
 
-		final String path = FilenameUtils.separatorsToUnix(pathResult.getDirectory()
-				.resolve(pathResult.getFilename())
-				.toString());
+		final String path = FilenameUtils
+				.separatorsToUnix(pathResult.getDirectory().resolve(pathResult.getFilename()).toString());
 
-		return new UploadResult(pathResult.getOriginalFilename(), path,
-				WebPathUtils.getFileUri(request, uploadProperties.getUriPrefix(), path), file.getOriginalFilename(),
-				pathResult.getFilename(), size, pathResult.getPath());
+		return new UploadResult(pathResult.getOriginalFilename(),
+				path,
+				WebPathUtils.getFileUri(request, uploadProperties.getUriPrefix(), path),
+				file.getOriginalFilename(),
+				pathResult.getFilename(),
+				size,
+				pathResult.getPath());
 	}
 
 }

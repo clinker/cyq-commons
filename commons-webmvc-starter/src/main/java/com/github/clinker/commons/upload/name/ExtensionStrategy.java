@@ -14,4 +14,5 @@ public interface ExtensionStrategy {
 	 * @return 扩展名
 	 */
 	String extension(String orignialFilename);
+
 }

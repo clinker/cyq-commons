@@ -43,7 +43,8 @@ public class RestErrorController implements ErrorController {
 		final Map<String, Object> body = new ConcurrentHashMap<>();
 		body.put(ErrorUtils.CODE, status.value());
 
-		return new ResponseEntity<>(body, status);
+		return new ResponseEntity<>(body,
+				status);
 	}
 
 }

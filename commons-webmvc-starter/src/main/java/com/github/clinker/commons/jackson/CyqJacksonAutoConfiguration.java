@@ -35,7 +35,6 @@ public class CyqJacksonAutoConfiguration {
 			builder.serializers(new LocalDateSerializer(DateTimeFormatters.DATE));
 			builder.serializers(new LocalDateTimeSerializer(DateTimeFormatters.DATE_TIME));
 		};
-
 	}
 
 }

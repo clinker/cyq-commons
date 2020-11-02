@@ -21,7 +21,7 @@ public class CyqWebMvcAutoConfiguration {
 	/**
 	 * 异常处理自动配置。
 	 */
-	@ConditionalOnProperty(prefix = PREFIX, name = "error-enabled", matchIfMissing = true, havingValue = "true")
+	@ConditionalOnProperty(prefix = PREFIX, name = "error-handling", matchIfMissing = true, havingValue = "true")
 	@ComponentScan(basePackageClasses = ControllerExceptionHandler.class)
 	static class ErrorConfiguation {
 
@@ -34,9 +34,10 @@ public class CyqWebMvcAutoConfiguration {
 	 *
 	 * @return 请求详情记录过滤器
 	 */
-	@ConditionalOnProperty(prefix = PREFIX, name = "detail-enabled", matchIfMissing = false, havingValue = "false")
+	@ConditionalOnProperty(prefix = PREFIX, name = "request-logging", matchIfMissing = false, havingValue = "false")
 	@Bean
 	protected Filter requestDetailLoggingFilter() {
 		return new RequestDetailLoggingFilter();
 	}
+
 }

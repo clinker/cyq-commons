@@ -13,4 +13,5 @@ public interface FilenameStrategy {
 	 * @return 新文件名
 	 */
 	String filename(String orignialFilename);
+
 }

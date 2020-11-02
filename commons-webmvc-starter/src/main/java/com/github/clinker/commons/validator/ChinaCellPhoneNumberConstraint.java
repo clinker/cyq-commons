@@ -23,4 +23,5 @@ public @interface ChinaCellPhoneNumberConstraint {
 	String message() default "手机号码无效";
 
 	Class<? extends Payload>[] payload() default {};
+
 }

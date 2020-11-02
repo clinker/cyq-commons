@@ -90,8 +90,7 @@ public abstract class AbstractFileWriter<F> implements FileWriter<F> {
 		Path fullDirectory = Paths.get(uploadProperties.getStoragePath());
 		if (!fullDirectory.isAbsolute()) {
 			// 如果不是绝对路径，则相对于real path
-			fullDirectory = Paths.get(request.getServletContext()
-					.getRealPath(""))
+			fullDirectory = Paths.get(request.getServletContext().getRealPath(""))
 					.resolve(uploadProperties.getStoragePath());
 		}
 		final Path directory = directoryStrategy.directory();
@@ -109,7 +108,10 @@ public abstract class AbstractFileWriter<F> implements FileWriter<F> {
 			throw new ServiceException(FileUploadError.FILE_UPLOAD);
 		}
 
-		return new LocalPathResult(orginalFilename, filename, directory, fullPath);
+		return new LocalPathResult(orginalFilename,
+				filename,
+				directory,
+				fullPath);
 	}
 
 }

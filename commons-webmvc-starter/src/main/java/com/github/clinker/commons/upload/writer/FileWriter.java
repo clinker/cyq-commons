@@ -18,4 +18,5 @@ public interface FileWriter<F> {
 	 * @return 上传后的文件路径结果
 	 */
 	LocalPathResult write(HttpServletRequest request, F file);
+
 }

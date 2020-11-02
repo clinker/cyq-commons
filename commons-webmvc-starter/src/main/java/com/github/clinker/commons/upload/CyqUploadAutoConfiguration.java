@@ -90,4 +90,5 @@ public class CyqUploadAutoConfiguration {
 		service.setFileWriter(fileWriter());
 		return service;
 	}
+
 }

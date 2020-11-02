@@ -17,14 +17,12 @@ public class Base64FileWriter extends AbstractFileWriter<String> {
 	protected void doWrite(final String base64, final Path absoluteDestination) throws Exception {
 		Files.deleteIfExists(absoluteDestination);
 
-		Files.write(absoluteDestination, Base64.getDecoder()
-				.decode(base64), StandardOpenOption.CREATE_NEW);
+		Files.write(absoluteDestination, Base64.getDecoder().decode(base64), StandardOpenOption.CREATE_NEW);
 	}
 
 	@Override
 	protected String orginalFilename(final String file) {
-		return UUID.randomUUID()
-				.toString();
+		return UUID.randomUUID().toString();
 	}
 
 }

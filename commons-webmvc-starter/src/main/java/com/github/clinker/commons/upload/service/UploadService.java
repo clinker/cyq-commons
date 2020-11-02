@@ -21,4 +21,5 @@ public interface UploadService {
 	 * @return 上传结果
 	 */
 	UploadResult upload(HttpServletRequest request, MultipartFile file, UploadProperties uploadProperties);
+
 }

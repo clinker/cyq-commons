@@ -73,15 +73,8 @@ public class LocalPathResult {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("LocalPathResult [originalFilename=")
-				.append(originalFilename)
-				.append(", filename=")
-				.append(filename)
-				.append(", directory=")
-				.append(directory)
-				.append(", path=")
-				.append(path)
-				.append(']');
+		builder.append("LocalPathResult [originalFilename=").append(originalFilename).append(", filename=")
+				.append(filename).append(", directory=").append(directory).append(", path=").append(path).append(']');
 		return builder.toString();
 	}
 
