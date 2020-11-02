@@ -14,8 +14,7 @@ import com.github.clinker.commons.security.AuthAccountUserDetails;
 public class SecurityUtils {
 
 	public static Authentication getAuthentication() {
-		return SecurityContextHolder.getContext()
-				.getAuthentication();
+		return SecurityContextHolder.getContext().getAuthentication();
 	}
 
 	public static Collection<? extends GrantedAuthority> getAuthorities() {

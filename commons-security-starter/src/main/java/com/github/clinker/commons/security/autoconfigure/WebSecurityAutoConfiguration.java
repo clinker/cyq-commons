@@ -52,14 +52,9 @@ public class WebSecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf()
-				.disable()// 不需要csrf
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and()
-				.authorizeRequests()
-				.anyRequest()
-				.authenticated()
+		http.csrf().disable()// 不需要csrf
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+				.anyRequest().authenticated()
 				.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
 
 					@Override
@@ -69,23 +64,17 @@ public class WebSecurityAutoConfiguration extends WebSecurityConfigurerAdapter {
 						return fsi;
 					}
 
-				})
-				.and()
-				.exceptionHandling()
-				.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)) // 未登录
+				}).and().exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)) // 未登录
 				.accessDeniedHandler(restAccessDeniedHandler)// 已登录，无权限
-				.and()
-				.formLogin()
-				.and()
-				.logout()
-				.addLogoutHandler(restLogoutHandler)
+				.and().formLogin().and().logout().addLogoutHandler(restLogoutHandler)
 				.logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
 
 		// 用重写的Filter替换掉原有的UsernamePasswordAuthenticationFilter
 		final LoginFormAuthenticationFilter filter = new LoginFormAuthenticationFilter(objectMapper);
 		filter.setAuthenticationSuccessHandler(restAuthenticationSuccessHandler);
 		filter.setAuthenticationFailureHandler(restAuthenticationFailureHandler);
-		filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
+		filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login",
+				"POST"));
 		filter.setPostOnly(true);
 		filter.setAuthenticationManager(authenticationManagerBean());
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);

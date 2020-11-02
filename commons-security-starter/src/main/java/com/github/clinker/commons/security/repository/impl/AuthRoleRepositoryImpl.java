@@ -29,8 +29,7 @@ public class AuthRoleRepositoryImpl implements AuthRoleRepository {
 		role.setSuperRole(rs.getBoolean(index++));
 		role.setSort(rs.getInt(index++));
 		role.setDescription(rs.getString(index++));
-		role.setCreationTime(rs.getTimestamp(index++)
-				.toLocalDateTime());
+		role.setCreationTime(rs.getTimestamp(index++).toLocalDateTime());
 
 		return role;
 	};

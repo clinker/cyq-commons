@@ -13,14 +13,13 @@ public class PinyinUtils {
 	 * @param str 字符串
 	 * @return 小写首字母
 	 */
-	public static String initials(String str) {
+	public static String initials(final String str) {
 		final StringBuilder sb = new StringBuilder();
 		for (final char c : str.toCharArray()) {
 			sb.append(pinyin(c).charAt(0));
 		}
 
-		return sb.toString()
-				.toLowerCase();
+		return sb.toString().toLowerCase();
 	}
 
 	/**
@@ -29,7 +28,7 @@ public class PinyinUtils {
 	 * @param c 字符
 	 * @return 是否是汉字
 	 */
-	public static boolean isChinese(char c) {
+	public static boolean isChinese(final char c) {
 		return Pinyin.isChinese(c);
 	}
 
@@ -39,9 +38,8 @@ public class PinyinUtils {
 	 * @param c 字符
 	 * @return 小写拼音
 	 */
-	public static String pinyin(char c) {
-		return Pinyin.toPinyin(c)
-				.toLowerCase();
+	public static String pinyin(final char c) {
+		return Pinyin.toPinyin(c).toLowerCase();
 	}
 
 	/**
@@ -50,9 +48,8 @@ public class PinyinUtils {
 	 * @param str 字符串
 	 * @return 小写拼音
 	 */
-	public static String pinyin(String str) {
-		return Pinyin.toPinyin(str, "")
-				.toLowerCase();
+	public static String pinyin(final String str) {
+		return Pinyin.toPinyin(str, "").toLowerCase();
 	}
 
 	/**
@@ -62,12 +59,12 @@ public class PinyinUtils {
 	 * @param separator 分隔符
 	 * @return 小写拼音
 	 */
-	public static String pinyin(String str, String separator) {
-		return Pinyin.toPinyin(str, separator)
-				.toLowerCase();
+	public static String pinyin(final String str, final String separator) {
+		return Pinyin.toPinyin(str, separator).toLowerCase();
 	}
 
 	private PinyinUtils() {
 		Pinyin.init(Pinyin.newConfig());
 	}
+
 }

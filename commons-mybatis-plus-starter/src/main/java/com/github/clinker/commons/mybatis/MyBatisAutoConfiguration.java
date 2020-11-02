@@ -46,5 +46,7 @@ public class MyBatisAutoConfiguration {
 
 			return interceptor;
 		}
+
 	}
+
 }

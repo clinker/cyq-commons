@@ -9,8 +9,7 @@ public class TokenGeneratorUuid implements TokenGenerator {
 
 	@Override
 	public String generate(Object principal) {
-		return UUID.randomUUID()
-				.toString();
+		return UUID.randomUUID().toString();
 	}
 
 }

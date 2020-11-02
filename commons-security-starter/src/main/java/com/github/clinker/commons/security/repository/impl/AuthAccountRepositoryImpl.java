@@ -24,10 +24,8 @@ public class AuthAccountRepositoryImpl implements AuthAccountRepository {
 		account.setPassword(rs.getString(index++));
 		account.setAvatar(rs.getString(index++));
 		account.setDescription(rs.getString(index++));
-		account.setCreationTime(rs.getTimestamp(index++)
-				.toLocalDateTime());
-		account.setModifiedTime(rs.getTimestamp(index++)
-				.toLocalDateTime());
+		account.setCreationTime(rs.getTimestamp(index++).toLocalDateTime());
+		account.setModifiedTime(rs.getTimestamp(index++).toLocalDateTime());
 		account.setDeleted(rs.getBoolean(index++));
 
 		return account;

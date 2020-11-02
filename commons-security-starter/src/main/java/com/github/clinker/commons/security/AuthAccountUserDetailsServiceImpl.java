@@ -48,12 +48,12 @@ public class AuthAccountUserDetailsServiceImpl implements UserDetailsService {
 
 		// 角色标识作为GrantedAuthority
 		final Set<GrantedAuthority> grantedAuthorities = authRoleRepository.findByAccountId(account.getId())
-				.parallelStream()
-				.map(AuthRole::getIdentifier)
-				.map(SimpleGrantedAuthority::new)
+				.parallelStream().map(AuthRole::getIdentifier).map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toSet());
 
-		return new AuthAccountUserDetails(account.getId(), account.getUsername(), account.getPassword(),
+		return new AuthAccountUserDetails(account.getId(),
+				account.getUsername(),
+				account.getPassword(),
 				grantedAuthorities);
 	}
 

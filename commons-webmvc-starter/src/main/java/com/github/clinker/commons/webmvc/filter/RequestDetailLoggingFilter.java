@@ -26,9 +26,7 @@ import com.github.clinker.commons.webmvc.RemoteAddressUtils;
  * 	}
  *
  * }
- *
  * </pre>
- *
  */
 public class RequestDetailLoggingFilter extends AbstractRequestLoggingFilter {
 

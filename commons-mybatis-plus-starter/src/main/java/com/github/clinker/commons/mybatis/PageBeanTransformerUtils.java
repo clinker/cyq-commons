@@ -22,6 +22,7 @@ public class PageBeanTransformerUtils {
 			public Class<TARGET> targetClass() {
 				return targetClass;
 			}
+
 		}.transform(sources);
 	}
 

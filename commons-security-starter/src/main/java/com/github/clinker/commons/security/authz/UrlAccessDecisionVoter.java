@@ -33,15 +33,11 @@ public class UrlAccessDecisionVoter implements AccessDecisionVoter<Object> {
 	@Override
 	public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
 		// 用户的角色标识列表
-		final Set<String> accountRoleIdentifiers = authentication.getAuthorities()
-				.parallelStream()
-				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.toSet());
+		final Set<String> accountRoleIdentifiers = authentication.getAuthorities().parallelStream()
+				.map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
 
 		// 角色是否是超级角色
-		if (authzCacheService.findSuperRoleIdentifiers()
-				.parallelStream()
-				.anyMatch(accountRoleIdentifiers::contains)) {
+		if (authzCacheService.findSuperRoleIdentifiers().parallelStream().anyMatch(accountRoleIdentifiers::contains)) {
 			return ACCESS_GRANTED;
 		}
 

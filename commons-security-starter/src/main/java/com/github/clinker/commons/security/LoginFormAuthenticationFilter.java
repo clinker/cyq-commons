@@ -37,15 +37,15 @@ public class LoginFormAuthenticationFilter extends AbstractAuthenticationProcess
 	private boolean postOnly = true;
 
 	public LoginFormAuthenticationFilter(ObjectMapper objectMapper) {
-		super(new AntPathRequestMatcher("/login", "POST"));
+		super(new AntPathRequestMatcher("/login",
+				"POST"));
 		this.objectMapper = objectMapper;
 	}
 
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-		if (postOnly && !request.getMethod()
-				.equals("POST")) {
+		if (postOnly && !request.getMethod().equals("POST")) {
 			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
 		}
 
@@ -53,7 +53,8 @@ public class LoginFormAuthenticationFilter extends AbstractAuthenticationProcess
 		log.debug("Authentication username: {}", loginForm.getUsername());
 
 		final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
-				loginForm.getUsername(), loginForm.getPassword());
+				loginForm.getUsername(),
+				loginForm.getPassword());
 		setDetails(request, authRequest);
 
 		try {

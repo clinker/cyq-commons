@@ -18,9 +18,7 @@ public class GrantedAuthorityConverter {
 			return Collections.emptySet();
 		}
 
-		return strings.stream()
-				.map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toSet());
+		return strings.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
 	}
 
 	public Set<String> encode(Collection<? extends GrantedAuthority> authorities) {
@@ -28,9 +26,7 @@ public class GrantedAuthorityConverter {
 			return Collections.emptySet();
 		}
 
-		return authorities.stream()
-				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.toSet());
+		return authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
 	}
 
 }

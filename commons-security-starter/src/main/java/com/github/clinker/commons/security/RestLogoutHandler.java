@@ -31,8 +31,7 @@ public class RestLogoutHandler implements LogoutHandler {
 		log.debug("Logout, token: {}", token);
 
 		if (StringUtils.isNotBlank(token)) {
-			token = StringUtils.removeStart(token, tokenProperties.getHeaderValuePrefix())
-					.trim();
+			token = StringUtils.removeStart(token, tokenProperties.getHeaderValuePrefix()).trim();
 			tokenService.delete(token);
 		}
 	}

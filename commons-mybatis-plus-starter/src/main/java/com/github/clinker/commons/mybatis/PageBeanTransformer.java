@@ -21,4 +21,5 @@ public interface PageBeanTransformer<SOURCE, TARGET> extends BeanTransformer<SOU
 
 		return result;
 	}
+
 }

@@ -63,9 +63,8 @@ public class AuthzCacheServiceImpl implements AuthzCacheService {
 
 	@Override
 	public Collection<ConfigAttribute> findByFilterInvocation(FilterInvocation filterInvocation) {
-		return filterInvocationCache.computeIfAbsent(
-				new FilterInvocationCacheKey(filterInvocation.getRequestUrl(), filterInvocation.getHttpRequest()
-						.getMethod()),
+		return filterInvocationCache.computeIfAbsent(new FilterInvocationCacheKey(filterInvocation.getRequestUrl(),
+				filterInvocation.getHttpRequest().getMethod()),
 				filterInvocationCacheKey -> configAttributeService.findByFilterInvocation(filterInvocation));
 	}
 
@@ -74,9 +73,7 @@ public class AuthzCacheServiceImpl implements AuthzCacheService {
 		return superRoleIdentifierCache.computeIfAbsent(AUTHZ_SUPER_ROLE_IDENTIFIER, key -> {
 			final List<AuthRole> superRoles = authRoleRepository.findSuper(authzProperties.getServiceId());
 			if (superRoles != null) {
-				return superRoles.parallelStream()
-						.map(AuthRole::getIdentifier)
-						.collect(Collectors.toSet());
+				return superRoles.parallelStream().map(AuthRole::getIdentifier).collect(Collectors.toSet());
 			} else {
 				return Collections.emptySet();
 			}

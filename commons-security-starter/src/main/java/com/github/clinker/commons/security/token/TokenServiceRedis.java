@@ -6,12 +6,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.AllArgsConstructor;
-
 /**
  * Redis实现的token服务。
  */
-@AllArgsConstructor
 public class TokenServiceRedis implements TokenService {
 
 	private final ObjectMapper objectMapper;
@@ -22,8 +19,16 @@ public class TokenServiceRedis implements TokenService {
 
 	private final TokenProperties tokenProperties;
 
+	public TokenServiceRedis(final ObjectMapper objectMapper, final StringRedisTemplate stringRedisTemplate,
+			final TokenGenerator tokenGenerator, final TokenProperties tokenProperties) {
+		this.objectMapper = objectMapper;
+		this.stringRedisTemplate = stringRedisTemplate;
+		this.tokenGenerator = tokenGenerator;
+		this.tokenProperties = tokenProperties;
+	}
+
 	@Override
-	public String create(Object principal, TokenValue value) {
+	public String create(final Object principal, final TokenValue value) {
 		final String token = tokenGenerator.generate(principal);
 
 		final String key = key(token);
@@ -35,23 +40,21 @@ public class TokenServiceRedis implements TokenService {
 			throw new RuntimeException(e);
 		}
 
-		stringRedisTemplate.opsForValue()
-				.set(key, json, tokenProperties.getTimeout());
+		stringRedisTemplate.opsForValue().set(key, json, tokenProperties.getTimeout());
 
 		return token;
 	}
 
 	@Override
-	public void delete(String token) {
+	public void delete(final String token) {
 		stringRedisTemplate.delete(key(token));
 	}
 
 	@Override
-	public void extend(String token) {
+	public void extend(final String token) {
 		final String key = key(token);
 
-		final long timeout = tokenProperties.getTimeout()
-				.toSeconds();
+		final long timeout = tokenProperties.getTimeout().toSeconds();
 		final long ttl = stringRedisTemplate.getExpire(key);
 
 		if (ttl < timeout / 2 && ttl > 0) {
@@ -61,9 +64,8 @@ public class TokenServiceRedis implements TokenService {
 	}
 
 	@Override
-	public TokenValue findByToken(String token) {
-		final String json = stringRedisTemplate.opsForValue()
-				.get(key(token));
+	public TokenValue findByToken(final String token) {
+		final String json = stringRedisTemplate.opsForValue().get(key(token));
 		if (StringUtils.isNotBlank(json)) {
 			try {
 				return objectMapper.readValue(json, TokenValue.class);
@@ -81,7 +83,7 @@ public class TokenServiceRedis implements TokenService {
 	 * @param token token
 	 * @return token或加前缀
 	 */
-	private String key(String token) {
+	private String key(final String token) {
 		final String prefix = tokenProperties.getPrefix();
 		if (StringUtils.isNotBlank(prefix)) {
 			return prefix + ":" + token;
