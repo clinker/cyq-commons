@@ -26,7 +26,9 @@ import org.slf4j.LoggerFactory;
  * 特点：
  * <ul>
  * <li>使用连接池；</li>
- * <li>并发连接数量可控。</li>
+ * <li>并发连接数量可控；</li>
+ * <li>HTTP层出错后，例如IO，抛出HttpException；</li>
+ * <li>HTTP状态码不是200时，抛出HttpStatusException。</li>
  * </ul>
  * <p/>
  * 使用方法：
@@ -81,25 +83,24 @@ public class HttpConnClient implements HttpConn {
 	@Override
 	public String get(final String uri) {
 		log.debug("Get uri: {}", uri);
-		String responseString = null;
-		int httpStatus = HttpStatus.SC_OK;
 
-		try {
-			final HttpGet get = new HttpGet(uri);
-			final CloseableHttpResponse response = httpClient.execute(get);
+		String responseString = null;
+
+		int httpStatus = HttpStatus.SC_OK;
+		final HttpGet get = new HttpGet(uri);
+
+		try (final CloseableHttpResponse response = httpClient.execute(get)) {
 			httpStatus = response.getCode();
 			responseString = EntityUtils.toString(response.getEntity(), DEFAULT_CHARSET);
-			try {
-				EntityUtils.consume(response.getEntity());
-			} finally {
-				response.close();
-			}
-		} catch (final Exception e) {
+			EntityUtils.consume(response.getEntity());
+		} catch (final IOException | ParseException e) {
 			log.error("Http get error", e);
+
+			throw new HttpException(e);
 		}
 
 		if (httpStatus != HttpStatus.SC_OK) {
-			log.error("Get status not OK, {}: {}", httpStatus, responseString);
+			log.error("Get not OK, {}: {}", httpStatus, responseString);
 			throw new HttpStatusException(httpStatus, responseString);
 		}
 
@@ -109,21 +110,19 @@ public class HttpConnClient implements HttpConn {
 
 	@Override
 	public String post(final String uri, final HttpEntity entity, final Map<String, Object> headers) {
-		log.debug("Post uri with entity: {}", uri);
+		log.debug("Post uri: {}", uri);
 
+		String responseString = null;
+
+		int httpStatus = HttpStatus.SC_OK;
 		final HttpPost post = new HttpPost(uri);
+		post.setEntity(entity);
 		if (headers != null) {
 			headers.entrySet()
 					.forEach(entry -> post.setHeader(entry.getKey(), entry.getValue()));
 		}
-		post.setEntity(entity);
 
-		int httpStatus = HttpStatus.SC_OK;
-		String responseString = null;
-		CloseableHttpResponse response = null;
-
-		try {
-			response = httpClient.execute(post);
+		try (CloseableHttpResponse response = httpClient.execute(post)) {
 			httpStatus = response.getCode();
 			responseString = EntityUtils.toString(response.getEntity(), DEFAULT_CHARSET);
 			EntityUtils.consume(response.getEntity());
@@ -131,15 +130,6 @@ public class HttpConnClient implements HttpConn {
 			log.error("Http post error", e);
 
 			throw new HttpException(e);
-
-		} finally {
-			try {
-				if (response != null) {
-					response.close();
-				}
-			} catch (final IOException e) {
-				// 忽略
-			}
 		}
 
 		if (httpStatus != HttpStatus.SC_OK) {
@@ -147,7 +137,7 @@ public class HttpConnClient implements HttpConn {
 			throw new HttpStatusException(httpStatus, responseString);
 		}
 
-		log.debug("Post response uri and body: {},{}", uri, responseString);
+		log.debug("Post uri {}, response: {}", uri, responseString);
 		return responseString;
 	}
 
