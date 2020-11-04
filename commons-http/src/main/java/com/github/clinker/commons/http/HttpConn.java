@@ -19,11 +19,20 @@ public interface HttpConn extends Closeable {
 	String get(String uri);
 
 	/**
+	 * 将响应作为字符串。
+	 *
+	 * @param uri     URI
+	 * @param headers 请求头
+	 * @return 响应字符串
+	 */
+	String get(String uri, Map<String, Object> headers);
+
+	/**
 	 * 请求体是HttpEntity。将响应作为字符串。
 	 *
 	 * @param uri
-	 * @param entity
-	 * @param headers
+	 * @param entity  HttpEntity
+	 * @param headers 请求头
 	 * @return 响应字符串
 	 */
 	String post(String uri, HttpEntity entity, Map<String, Object> headers);

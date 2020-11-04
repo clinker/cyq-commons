@@ -84,10 +84,21 @@ public class HttpConnClient implements HttpConn {
 	public String get(final String uri) {
 		log.debug("Get uri: {}", uri);
 
+		return get(uri, null);
+	}
+
+	@Override
+	public String get(final String uri, final Map<String, Object> headers) {
+		log.debug("Get uri: {}", uri);
+
 		String responseString = null;
 
 		int httpStatus = HttpStatus.SC_OK;
 		final HttpGet get = new HttpGet(uri);
+		if (headers != null) {
+			headers.entrySet()
+					.forEach(entry -> get.setHeader(entry.getKey(), entry.getValue()));
+		}
 
 		try (final CloseableHttpResponse response = httpClient.execute(get)) {
 			httpStatus = response.getCode();
