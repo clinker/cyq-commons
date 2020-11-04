@@ -111,7 +111,7 @@ public class HttpConnClient implements HttpConn {
 		}
 
 		if (httpStatus != HttpStatus.SC_OK) {
-			log.error("Get not OK, {}: {}", httpStatus, responseString);
+			log.error("Get not OK, uri: {}\nstatus: {}, {}", uri, httpStatus, responseString);
 			throw new HttpStatusException(httpStatus, responseString);
 		}
 
@@ -144,7 +144,7 @@ public class HttpConnClient implements HttpConn {
 		}
 
 		if (httpStatus != HttpStatus.SC_OK) {
-			log.error("POST not OK: {}, {}", httpStatus, responseString);
+			log.error("POST not OK, uri: {}\nstatus: {}, {}", uri, httpStatus, responseString);
 			throw new HttpStatusException(httpStatus, responseString);
 		}
 
