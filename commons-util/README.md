@@ -1,9 +1,12 @@
 # commons-util
-工具类集合。无第三方依赖。  
+工具类集合。无第三方依赖。
 部分代码取自：
 - Apache Commons Codec
 - Spring framework
 - Damien Miller <djm@mindrot.org>
+
+# bean
+解析对象，生成键值对。
 
 # codec
 byte、int等数字类型的相互转换。
