@@ -71,7 +71,7 @@ class BeanPropertyUtilsTest {
 		person.setName("zhangsan");
 		person.setAge(18);
 
-		final LinkedHashMap<String, Object> keyValues = BeanPropertyUtils.parse(person, false);
+		final LinkedHashMap<String, Object> keyValues = BeanPropertyUtils.parse(person, false, false);
 		assertEquals(5, keyValues.size());
 
 		// key是否有序
@@ -91,12 +91,13 @@ class BeanPropertyUtilsTest {
 	}
 
 	@Test
-	void testParseExcludeNullValue() {
+	void testParseExcludeEmptyValue() {
 		final Person person = new Person();
 		person.setName("zhangsan");
+		person.setName1("");
 		person.setAge(18);
 
-		final LinkedHashMap<String, Object> keyValues = BeanPropertyUtils.parseExcludeNullValue(person);
+		final LinkedHashMap<String, Object> keyValues = BeanPropertyUtils.parseExcludeEmptyValue(person);
 		assertEquals(2, keyValues.size());
 
 		// key是否有序

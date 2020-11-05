@@ -24,11 +24,13 @@ public class BeanPropertyUtils {
 	/**
 	 * 解析对象，生成有序的键值对。按键的字母顺序排序，区分大小写。
 	 *
-	 * @param o               对象
-	 * @param ignoreNullValue 是否忽略值为null的属性
+	 * @param o                 对象
+	 * @param ignoreNullValue   是否忽略值为null的属性
+	 * @param ignoreEmptyString 是否忽略值为""的字符串
 	 * @return 对象属性的键值对
 	 */
-	public static LinkedHashMap<String, Object> parse(final Object o, final boolean ignoreNullValue) {
+	public static LinkedHashMap<String, Object> parse(final Object o, final boolean ignoreNullValue,
+			final boolean ignoreEmptyString) {
 		final List<String> keys = new ArrayList<>();
 		final Map<String, Object> keyValues = new HashMap<>();
 		final Class<?> cls = o.getClass();
@@ -61,10 +63,14 @@ public class BeanPropertyUtils {
 			}
 			if (value == null && ignoreNullValue) {
 				// 忽略
-			} else {
-				keys.add(propertyDescriptor.getName());
-				keyValues.put(propertyDescriptor.getName(), value);
+				continue;
 			}
+			if ("".equals(value) && ignoreEmptyString) {
+				// 忽略
+				continue;
+			}
+			keys.add(propertyDescriptor.getName());
+			keyValues.put(propertyDescriptor.getName(), value);
 		}
 
 		// 排序，区分大小写
@@ -79,13 +85,13 @@ public class BeanPropertyUtils {
 	}
 
 	/**
-	 * 解析对象，生成有序的键值对。按键的字母顺序排序，区分大小写。不包括值为null的属性。
+	 * 解析对象，生成有序的键值对。按键的字母顺序排序，区分大小写。不包括值为null、空字符串的属性。
 	 *
 	 * @param o 对象
-	 * @return 对象属性的键值对。不包括值为null的属性
+	 * @return 对象属性的键值对。不包括值为null、空字符串的属性
 	 */
-	public static LinkedHashMap<String, Object> parseExcludeNullValue(final Object o) {
-		return parse(o, true);
+	public static LinkedHashMap<String, Object> parseExcludeEmptyValue(final Object o) {
+		return parse(o, true, true);
 	}
 
 	private BeanPropertyUtils() {
