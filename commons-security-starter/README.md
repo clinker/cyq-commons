@@ -61,13 +61,13 @@ authz:
 - 见`LoginResult`
 ```json
 {
-    "accountId": "4e4000ba-4c36-4cd0-8a02-4bd7d38e8f38",
+    "accountId": "4e4000ba-4c32-4cd0-8a02-4bd7d38e8f38",
     "username": "zhangsan"
 }
 ```
 - 响应header
 ```
-X-Auth-Token: e72b2bd1-0cb7-4f40-81b9-c7b6f4a36f4a
+X-Auth-Token: e72b2bd1-0cb7-4f40-81b9-c7b6f4a32f4a
 ```
 
 ## 认证失败响应
@@ -103,7 +103,7 @@ X-Auth-Token: e72b2bd1-0cb7-4f40-81b9-c7b6f4a36f4a
 ## 账号表
 ```
 CREATE TABLE `auth_account` (
-  `id` varchar(36) NOT NULL COMMENT 'ID',
+  `id` varchar(32) NOT NULL COMMENT 'ID',
   `service_id` varchar(50) NOT NULL COMMENT '所属服务ID，即租户',
   `username` varchar(60) NOT NULL COMMENT '登录名',
   `password` varchar(80) NOT NULL COMMENT '登录密码',
@@ -121,7 +121,7 @@ CREATE TABLE `auth_account` (
 ## 角色表
 ```
 CREATE TABLE `auth_role` (
-  `id` varchar(36) NOT NULL COMMENT 'ID',
+  `id` varchar(32) NOT NULL COMMENT 'ID',
   `service_id` varchar(50) NOT NULL COMMENT '所属服务ID，即租户',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `identifier` varchar(50) NOT NULL COMMENT '标识',
@@ -138,7 +138,7 @@ CREATE TABLE `auth_role` (
 ## 权限表
 ```
 CREATE TABLE `auth_permission` (
-  `id` varchar(36) NOT NULL COMMENT 'ID',
+  `id` varchar(32) NOT NULL COMMENT 'ID',
   `service_id` varchar(50) NOT NULL COMMENT '所属服务ID，即租户',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `url` varchar(50) NOT NULL COMMENT 'ANT风格URL',
@@ -154,9 +154,9 @@ CREATE TABLE `auth_permission` (
 ## 账号与角色关联表
 ```
 CREATE TABLE `auth_account_role` (
-  `id` varchar(36) NOT NULL COMMENT 'ID',
-  `account_id` varchar(36) NOT NULL COMMENT '账号ID，关联auth_account表',
-  `role_id` varchar(36) NOT NULL COMMENT '角色ID，关联auth_role表',
+  `id` varchar(32) NOT NULL COMMENT 'ID',
+  `account_id` varchar(32) NOT NULL COMMENT '账号ID，关联auth_account表',
+  `role_id` varchar(32) NOT NULL COMMENT '角色ID，关联auth_role表',
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `udx_account_role` (`account_id`,`role_id`),
   KEY `idx_role_id` (`role_id`)
@@ -166,9 +166,9 @@ CREATE TABLE `auth_account_role` (
 ## 角色与权限的关联表
 ```
 CREATE TABLE `auth_role_permission` (
-  `id` varchar(36) NOT NULL COMMENT 'ID',
-  `role_id` varchar(36) NOT NULL COMMENT '角色ID，关联auth_role表',
-  `permission_id` varchar(36) NOT NULL COMMENT '权限ID，关联auth_permission表',
+  `id` varchar(32) NOT NULL COMMENT 'ID',
+  `role_id` varchar(32) NOT NULL COMMENT '角色ID，关联auth_role表',
+  `permission_id` varchar(32) NOT NULL COMMENT '权限ID，关联auth_permission表',
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `udx_role_permission` (`role_id`,`permission_id`)
 ) COMMENT='角色与权限的关联';
