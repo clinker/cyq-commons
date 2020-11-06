@@ -25,10 +25,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.clinker.commons.security.AuthAccountUserDetailsServiceImpl;
-import com.github.clinker.commons.security.RestAccessDeniedHandler;
-import com.github.clinker.commons.security.RestAuthenticationFailureHandler;
-import com.github.clinker.commons.security.RestAuthenticationSuccessHandler;
-import com.github.clinker.commons.security.RestLogoutHandler;
+import com.github.clinker.commons.security.TenantProperties;
+import com.github.clinker.commons.security.auth.RestAccessDeniedHandler;
+import com.github.clinker.commons.security.auth.RestAuthenticationFailureHandler;
+import com.github.clinker.commons.security.auth.RestAuthenticationSuccessHandler;
+import com.github.clinker.commons.security.auth.RestLogoutHandler;
 import com.github.clinker.commons.security.authz.AuthzCacheService;
 import com.github.clinker.commons.security.authz.AuthzCacheServiceImpl;
 import com.github.clinker.commons.security.authz.AuthzProperties;
@@ -58,7 +59,7 @@ import lombok.AllArgsConstructor;
  */
 @Configuration
 @AutoConfigureAfter({ JacksonAutoConfiguration.class, DataSourceAutoConfiguration.class, RedisAutoConfiguration.class })
-@EnableConfigurationProperties({ TokenProperties.class, AuthzProperties.class })
+@EnableConfigurationProperties({ TokenProperties.class, TenantProperties.class, AuthzProperties.class })
 @AllArgsConstructor
 class SecurityAutoConfiguration {
 
@@ -77,24 +78,27 @@ class SecurityAutoConfiguration {
 		@Autowired
 		private ApplicationEventPublisher publisher;
 
+		@Autowired
+		private TenantProperties tenantProperties;
+
 		@Override
 		public void afterPropertiesSet() throws Exception {
 			// 必须设置serviceId
-			if (StringUtils.isBlank(authzProperties.getServiceId())) {
-				throw new Exception("必须设置属性authz.serviceId");
+			if (StringUtils.isBlank(tenantProperties.getServiceId())) {
+				throw new Exception("必须设置属性auth.service-id");
 			}
 		}
 
 		@Bean
 		@ConditionalOnMissingBean
 		public AuthzCacheService authzCacheService() {
-			return new AuthzCacheServiceImpl(authRoleRepository, authzProperties, configAttributeService());
+			return new AuthzCacheServiceImpl(authRoleRepository, configAttributeService(), tenantProperties);
 		}
 
 		@Bean
 		@ConditionalOnMissingBean
 		public ConfigAttributeService configAttributeService() {
-			return new ConfigAttributeServiceImpl(authPermissionRepository, authRoleRepository, authzProperties);
+			return new ConfigAttributeServiceImpl(authPermissionRepository, authRoleRepository, tenantProperties);
 		}
 
 		@Bean
@@ -130,6 +134,9 @@ class SecurityAutoConfiguration {
 	private final ObjectMapper objectMapper;
 
 	private final StringRedisTemplate stringRedisTemplate;
+
+	@Autowired
+	private final TenantProperties tenantProperties;
 
 	private final TokenProperties tokenProperties;
 
@@ -209,7 +216,7 @@ class SecurityAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public UserDetailsService userDetailsService() {
-		return new AuthAccountUserDetailsServiceImpl(authAccountRepository(), authRoleRepository());
+		return new AuthAccountUserDetailsServiceImpl(authAccountRepository(), authRoleRepository(), tenantProperties);
 	}
 
 }

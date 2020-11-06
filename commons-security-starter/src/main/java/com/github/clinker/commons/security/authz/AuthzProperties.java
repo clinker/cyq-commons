@@ -12,11 +12,6 @@ import lombok.Data;
 public class AuthzProperties {
 
 	/**
-	 * 所属服务ID，即租户
-	 */
-	private String serviceId;
-
-	/**
 	 * 授权缓存redis topic
 	 */
 	private String cacheTopic = "authz:refresh";

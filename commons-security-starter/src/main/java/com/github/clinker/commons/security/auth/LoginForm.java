@@ -1,4 +1,4 @@
-package com.github.clinker.commons.security;
+package com.github.clinker.commons.security.auth;
 
 import lombok.Data;
 

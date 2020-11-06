@@ -16,11 +16,11 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.clinker.commons.security.LoginFormAuthenticationFilter;
-import com.github.clinker.commons.security.RestAccessDeniedHandler;
-import com.github.clinker.commons.security.RestAuthenticationFailureHandler;
-import com.github.clinker.commons.security.RestAuthenticationSuccessHandler;
-import com.github.clinker.commons.security.RestLogoutHandler;
+import com.github.clinker.commons.security.auth.LoginFormAuthenticationFilter;
+import com.github.clinker.commons.security.auth.RestAccessDeniedHandler;
+import com.github.clinker.commons.security.auth.RestAuthenticationFailureHandler;
+import com.github.clinker.commons.security.auth.RestAuthenticationSuccessHandler;
+import com.github.clinker.commons.security.auth.RestLogoutHandler;
 import com.github.clinker.commons.security.authz.UrlAccessDecisionVoter;
 import com.github.clinker.commons.security.authz.UrlPermissionSecurityMetadataSource;
 import com.github.clinker.commons.security.token.TokenAuthenticationFilter;

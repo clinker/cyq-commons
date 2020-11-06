@@ -20,6 +20,7 @@ public class AuthAccountRepositoryImpl implements AuthAccountRepository {
 
 		final AuthAccount account = new AuthAccount();
 		account.setId(rs.getString(index++));
+		account.setServiceId(rs.getString(index++));
 		account.setUsername(rs.getString(index++));
 		account.setPassword(rs.getString(index++));
 		account.setAvatar(rs.getString(index++));
@@ -40,10 +41,11 @@ public class AuthAccountRepositoryImpl implements AuthAccountRepository {
 	}
 
 	@Override
-	public AuthAccount findByUsername(final String username) {
-		final String sql = "SELECT id,username,password,avatar,description,creation_time,modified_time,deleted FROM auth_account WHERE username=? AND deleted=FALSE";
+	public AuthAccount findByUsername(final String username, final String serviceId) {
+		final String sql = "SELECT id,service_id,username,password,avatar,description,creation_time,modified_time,deleted FROM auth_account WHERE service_id=? AND username=? AND deleted=FALSE";
 
-		final List<AuthAccount> accounts = jdbcTemplate.query(sql, new Object[] { username }, authAccountMapper);
+		final List<AuthAccount> accounts = jdbcTemplate.query(sql, new Object[] { username, serviceId },
+				authAccountMapper);
 
 		return accounts == null || accounts.isEmpty() ? null : accounts.get(0);
 	}

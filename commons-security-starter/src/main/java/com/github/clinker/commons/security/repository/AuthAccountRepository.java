@@ -10,9 +10,10 @@ public interface AuthAccountRepository {
 	/**
 	 * 根据登录名查询。
 	 *
-	 * @param username 登录名
+	 * @param serviceId 所属服务ID
+	 * @param username  登录名
 	 * @return 账号，或null
 	 */
-	AuthAccount findByUsername(String username);
+	AuthAccount findByUsername(String serviceId, String username);
 
 }

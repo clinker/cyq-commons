@@ -13,6 +13,7 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.util.AntPathMatcher;
 
+import com.github.clinker.commons.security.TenantProperties;
 import com.github.clinker.commons.security.entity.AuthPermission;
 import com.github.clinker.commons.security.entity.AuthRole;
 import com.github.clinker.commons.security.repository.AuthPermissionRepository;
@@ -35,7 +36,7 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 
 	private final AuthRoleRepository authRoleRepository;
 
-	private final AuthzProperties authzProperties;
+	private final TenantProperties tenantProperties;
 
 	/**
 	 * 随机角色标识，用于避免返回空集合
@@ -46,16 +47,16 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 					.toEpochMilli());
 
 	public ConfigAttributeServiceImpl(final AuthPermissionRepository authPermissionRepository,
-			final AuthRoleRepository authRoleRepository, final AuthzProperties authzProperties) {
+			final AuthRoleRepository authRoleRepository, final TenantProperties tenantProperties) {
 		this.authPermissionRepository = authPermissionRepository;
 		this.authRoleRepository = authRoleRepository;
-		this.authzProperties = authzProperties;
+		this.tenantProperties = tenantProperties;
 	}
 
 	@Override
 	public Collection<ConfigAttribute> findByFilterInvocation(final FilterInvocation filterInvocation) {
 		// 是否忽略
-		final boolean ignored = authPermissionRepository.findAll(authzProperties.getServiceId())
+		final boolean ignored = authPermissionRepository.findAll(tenantProperties.getServiceId())
 				.parallelStream()
 				.anyMatch(p -> antPathMatcher.match(p.getUrl(), filterInvocation.getRequestUrl())
 						&& Boolean.TRUE.equals(p.getIgnored()));
@@ -65,7 +66,7 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 		}
 
 		// 请求的URL匹配的权限ID列表
-		final Set<String> urlPermissionIds = authPermissionRepository.findAll(authzProperties.getServiceId())
+		final Set<String> urlPermissionIds = authPermissionRepository.findAll(tenantProperties.getServiceId())
 				.parallelStream()
 				.filter(permission -> isUrlAllowed(permission, filterInvocation))
 				.map(AuthPermission::getId)

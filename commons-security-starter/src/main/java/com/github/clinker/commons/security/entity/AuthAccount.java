@@ -21,6 +21,11 @@ public class AuthAccount {
 	private String id;
 
 	/**
+	 * 所属服务ID，即租户
+	 */
+	private String serviceId;
+
+	/**
 	 * 登录名
 	 */
 	private String username;

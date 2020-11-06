@@ -1,4 +1,4 @@
-package com.github.clinker.commons.security;
+package com.github.clinker.commons.security.auth;
 
 import java.io.IOException;
 
@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.clinker.commons.security.AuthAccountUserDetails;
 import com.github.clinker.commons.security.token.GrantedAuthorityConverter;
 import com.github.clinker.commons.security.token.TokenProperties;
 import com.github.clinker.commons.security.token.TokenService;

@@ -27,10 +27,13 @@ public class AuthAccountUserDetailsServiceImpl implements UserDetailsService {
 
 	private final AuthRoleRepository authRoleRepository;
 
+	private final TenantProperties tenantProperties;
+
 	public AuthAccountUserDetailsServiceImpl(final AuthAccountRepository authAccountRepository,
-			final AuthRoleRepository authRoleRepository) {
+			final AuthRoleRepository authRoleRepository, final TenantProperties tenantProperties) {
 		this.authAccountRepository = authAccountRepository;
 		this.authRoleRepository = authRoleRepository;
+		this.tenantProperties = tenantProperties;
 	}
 
 	@Override
@@ -40,7 +43,7 @@ public class AuthAccountUserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("账号不存在：" + username);
 		}
 
-		final AuthAccount account = authAccountRepository.findByUsername(username);
+		final AuthAccount account = authAccountRepository.findByUsername(tenantProperties.getServiceId(), username);
 		if (account == null || Boolean.TRUE.equals(account.getDeleted())) {
 			log.warn("Username not found: {}", username);
 			throw new UsernameNotFoundException("账号不存在：" + username);

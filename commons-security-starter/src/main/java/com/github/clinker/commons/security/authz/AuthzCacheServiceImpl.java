@@ -12,6 +12,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 
+import com.github.clinker.commons.security.TenantProperties;
 import com.github.clinker.commons.security.authz.event.AuthzRefreshEvent;
 import com.github.clinker.commons.security.entity.AuthRole;
 import com.github.clinker.commons.security.repository.AuthRoleRepository;
@@ -31,8 +32,6 @@ public class AuthzCacheServiceImpl implements AuthzCacheService {
 	 */
 	private final String AUTHZ_SUPER_ROLE_IDENTIFIER = "AUTHZ_SUPER_ROLE_IDENTIFIER";
 
-	private final AuthzProperties authzProperties;
-
 	private final ConfigAttributeService configAttributeService;
 
 	/**
@@ -45,11 +44,13 @@ public class AuthzCacheServiceImpl implements AuthzCacheService {
 	 */
 	private final Map<String, Set<String>> superRoleIdentifierCache = new ConcurrentHashMap<>();
 
-	public AuthzCacheServiceImpl(final AuthRoleRepository authRoleRepository, final AuthzProperties authzProperties,
-			final ConfigAttributeService configAttributeService) {
+	private final TenantProperties tenantProperties;
+
+	public AuthzCacheServiceImpl(final AuthRoleRepository authRoleRepository,
+			final ConfigAttributeService configAttributeService, final TenantProperties tenantProperties) {
 		this.authRoleRepository = authRoleRepository;
-		this.authzProperties = authzProperties;
 		this.configAttributeService = configAttributeService;
+		this.tenantProperties = tenantProperties;
 	}
 
 	@Override
@@ -72,7 +73,7 @@ public class AuthzCacheServiceImpl implements AuthzCacheService {
 	@Override
 	public Set<String> findSuperRoleIdentifiers() {
 		return superRoleIdentifierCache.computeIfAbsent(AUTHZ_SUPER_ROLE_IDENTIFIER, key -> {
-			final List<AuthRole> superRoles = authRoleRepository.findSuper(authzProperties.getServiceId());
+			final List<AuthRole> superRoles = authRoleRepository.findSuper(tenantProperties.getServiceId());
 			if (superRoles != null) {
 				return superRoles.parallelStream()
 						.map(AuthRole::getIdentifier)
