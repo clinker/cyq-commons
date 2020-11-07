@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
-import org.springframework.util.AntPathMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.github.clinker.commons.security.TenantProperties;
 import com.github.clinker.commons.security.entity.AuthPermission;
@@ -30,7 +30,7 @@ import com.github.clinker.commons.security.repository.AuthRoleRepository;
  */
 public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 
-	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
+	private static final String ANY_METHOD = "*";
 
 	private final AuthPermissionRepository authPermissionRepository;
 
@@ -58,8 +58,8 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 		// 是否忽略
 		final boolean ignored = authPermissionRepository.findAll(tenantProperties.getServiceId())
 				.parallelStream()
-				.anyMatch(p -> antPathMatcher.match(p.getUrl(), filterInvocation.getRequestUrl())
-						&& Boolean.TRUE.equals(p.getIgnored()));
+				.filter(p -> Boolean.TRUE.equals(p.getIgnored()))
+				.anyMatch(p -> isUrlAllowed(p, filterInvocation));
 		if (ignored) {
 			// 如果忽略，则返回空属性列表
 			return SecurityConfig.createList();
@@ -99,14 +99,16 @@ public class ConfigAttributeServiceImpl implements ConfigAttributeService {
 	}
 
 	private boolean isUrlAllowed(final AuthPermission permission, final FilterInvocation filterInvocation) {
-		// URL不匹配
-		if (!antPathMatcher.match(permission.getUrl(), filterInvocation.getRequestUrl())) {
+		// 检查servletPath + pathInfo
+		final AntPathRequestMatcher matcher = new AntPathRequestMatcher(permission.getUrl());
+		final boolean matches = matcher.matches(filterInvocation.getHttpRequest());
+		if (!matches) {
 			return false;
 		}
 
 		// 检查HTTP method
 		final String permissionMethod = StringUtils.trimToEmpty(permission.getMethod());
-		if ("*".equals(permissionMethod)) {
+		if (ANY_METHOD.equals(permissionMethod)) {
 			// *表示任意HTTP method
 			return true;
 		}
