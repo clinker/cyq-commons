@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -34,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * 使用方法：
  *
  * <pre>
- *  HttpConn httpConn = new HttpConnClient(5);
+ *  HttpConn httpConn = new HttpConnClient(5,100);
  *  httpConn.post(...);
  *  httpConn.get(...);
  *  ...
@@ -45,8 +46,6 @@ public class HttpConnClient implements HttpConn {
 
 	private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
-	private static final int DEFAULT_CONNECTIONS = 5;
-
 	private final PoolingHttpClientConnectionManager cm;
 
 	private final CloseableHttpClient httpClient;
@@ -54,17 +53,17 @@ public class HttpConnClient implements HttpConn {
 	private final Logger log = LoggerFactory.getLogger(HttpConnClient.class);
 
 	public HttpConnClient() {
-		this(DEFAULT_CONNECTIONS);
+		this(10, 200);
 	}
 
-	public HttpConnClient(final int maxConnections) {
+	public HttpConnClient(final int maxPerRoute, final int maxTotal) {
 		cm = new PoolingHttpClientConnectionManager();
-		// 一个HttpConn实例只用于一个route
 		// 连接池总数量
-		cm.setMaxTotal(maxConnections);
+		cm.setMaxTotal(maxTotal);
 		// 每route的最大连接数
-		cm.setDefaultMaxPerRoute(maxConnections);
+		cm.setDefaultMaxPerRoute(maxPerRoute);
 		httpClient = HttpClients.custom()
+				.disableCookieManagement()
 				.setConnectionManager(cm)
 				.build();
 	}
@@ -82,19 +81,25 @@ public class HttpConnClient implements HttpConn {
 
 	@Override
 	public String get(final String uri) {
-		log.debug("Get uri: {}", uri);
-
-		return get(uri, null);
+		return get(uri, null, null);
 	}
 
 	@Override
 	public String get(final String uri, final Map<String, Object> headers) {
+		return get(uri, headers, null);
+	}
+
+	@Override
+	public String get(final String uri, final Map<String, Object> headers, final RequestConfig requestConfig) {
 		log.debug("Get uri: {}", uri);
 
 		String responseString = null;
 
 		int httpStatus = HttpStatus.SC_OK;
 		final HttpGet get = new HttpGet(uri);
+		if (requestConfig != null) {
+			get.setConfig(requestConfig);
+		}
 		if (headers != null) {
 			headers.entrySet()
 					.forEach(entry -> get.setHeader(entry.getKey(), entry.getValue()));

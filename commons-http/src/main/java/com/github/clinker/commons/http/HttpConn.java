@@ -3,6 +3,7 @@ package com.github.clinker.commons.http;
 import java.io.Closeable;
 import java.util.Map;
 
+import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.core5.http.HttpEntity;
 
 /**
@@ -26,6 +27,16 @@ public interface HttpConn extends Closeable {
 	 * @return 响应字符串
 	 */
 	String get(String uri, Map<String, Object> headers);
+
+	/**
+	 * 将响应作为字符串。
+	 *
+	 * @param uri           URI
+	 * @param headers       请求头
+	 * @param requestConfig RequestConfig
+	 * @return 响应字符串
+	 */
+	String get(final String uri, final Map<String, Object> headers, final RequestConfig requestConfig);
 
 	/**
 	 * 请求体是HttpEntity。将响应作为字符串。
