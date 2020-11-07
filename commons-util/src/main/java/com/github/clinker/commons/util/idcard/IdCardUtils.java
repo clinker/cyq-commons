@@ -145,7 +145,7 @@ public class IdCardUtils {
 	 * @return 生日，例如：2099-01-02
 	 */
 	public static String getBirthday(final String idCard) {
-		if (idCard == null) {
+		if (idCard == null | idCard.isBlank() || idCard.length() < ID_LENGTH) {
 			return null;
 		}
 
