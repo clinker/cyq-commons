@@ -15,6 +15,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Redis实现的token服务。
+ * <p/>
+ * 每个登录存两条：
+ * <p>
+ * 一个value，存放token，key是${auth.token}:${token}，值是TokenValue
+ * </p>
+ * <p>
+ * 一个set，存放account的所有token，key是${auth.token}:accounts:${accountId}，值是token的key
+ * </p>
+ *
  */
 public class TokenServiceRedis implements TokenService {
 
@@ -80,22 +89,6 @@ public class TokenServiceRedis implements TokenService {
 	}
 
 	@Override
-	public void delete(final String token) {
-		final String tokenKey = tokenKey(token);
-
-		final TokenValue tokenValue = findByToken(token);
-
-		if (tokenValue != null) {
-			// 从account里删除
-			final String accountKey = accountKey(tokenValue.getAccountId());
-			stringRedisTemplate.opsForSet()
-					.remove(accountKey, token);
-		}
-
-		stringRedisTemplate.delete(tokenKey);
-	}
-
-	@Override
 	public void deleteByAccountId(final String accountId) {
 		final String accountKey = accountKey(accountId);
 
@@ -111,6 +104,22 @@ public class TokenServiceRedis implements TokenService {
 
 		// 删除account
 		stringRedisTemplate.delete(accountKey);
+	}
+
+	@Override
+	public void deleteByToken(final String token) {
+		final String tokenKey = tokenKey(token);
+
+		final TokenValue tokenValue = findByToken(token);
+
+		if (tokenValue != null) {
+			// 从account里删除
+			final String accountKey = accountKey(tokenValue.getAccountId());
+			stringRedisTemplate.opsForSet()
+					.remove(accountKey, tokenKey);
+		}
+
+		stringRedisTemplate.delete(tokenKey);
 	}
 
 	@Override

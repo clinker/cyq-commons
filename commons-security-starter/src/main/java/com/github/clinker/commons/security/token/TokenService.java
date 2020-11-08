@@ -21,7 +21,7 @@ public interface TokenService {
 	 *
 	 * @param token token
 	 */
-	void delete(String token);
+	void deleteByToken(String token);
 
 	/**
 	 * 删除accountId关联的token集合，并删除其中的所有token。
