@@ -8,7 +8,7 @@ import java.util.UUID;
 public class TokenGeneratorUuid implements TokenGenerator {
 
 	@Override
-	public String generate(final Object principal) {
+	public String generate(final String accountId) {
 		return UUID.randomUUID()
 				.toString();
 	}

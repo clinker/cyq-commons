@@ -5,6 +5,12 @@ package com.github.clinker.commons.security.token;
  */
 public interface TokenGenerator {
 
-	String generate(Object principal);
+	/**
+	 * 生成userDetails的token。
+	 *
+	 * @param accountId 账号ID
+	 * @return token
+	 */
+	String generate(String accountId);
 
 }

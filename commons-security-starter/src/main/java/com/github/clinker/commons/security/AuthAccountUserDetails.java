@@ -23,10 +23,16 @@ public class AuthAccountUserDetails implements UserDetails {
 
 	private final boolean enabled;
 
+	/**
+	 * AuthAccount ID
+	 */
 	private final String id;
 
 	private final String password;
 
+	/**
+	 * AuthAccount username
+	 */
 	private final String username;
 
 	public AuthAccountUserDetails(final String id, final String username, final String password,

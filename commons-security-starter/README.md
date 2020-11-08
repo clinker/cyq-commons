@@ -28,7 +28,9 @@ authz:
 ## 使用Token保持会话
 - 自定义生成规则。本例用UUID，见`TokenGeneratorUuid`
 - 自定义header名称、header值前缀、token有效期、token在redis的key前缀， 见`TokenProperties`
-- 自定义存储。本例用redis
+- 自定义存储。本例用redis。每个登录存两条：
+    + 一个value，存放token，key是${auth.token}:${token}，值是`com.github.clinker.commons.security.token.TokenValue`
+    + 一个set，存放account的所有token，key是${auth.token}:accounts:${accountId}，值是token的key
 
 ## 客户端通过HTTP header保持会话
 - `TokenProperties`定义header名称。本例是`Authorization`

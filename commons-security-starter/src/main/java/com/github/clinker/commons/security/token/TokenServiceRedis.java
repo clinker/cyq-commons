@@ -1,7 +1,14 @@
 package com.github.clinker.commons.security.token;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.connection.RedisStringCommands.SetOption;
+import org.springframework.data.redis.connection.StringRedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.types.Expiration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,11 +34,24 @@ public class TokenServiceRedis implements TokenService {
 		this.tokenProperties = tokenProperties;
 	}
 
-	@Override
-	public String create(final Object principal, final TokenValue value) {
-		final String token = tokenGenerator.generate(principal);
+	/**
+	 * AccountId集合的key。
+	 *
+	 * @param accountId 账号ID
+	 * @return account ID集合t的key
+	 */
+	private String accountKey(final String accountId) {
+		final String suffix = "accounts:" + accountId;
+		final String prefix = tokenProperties.getPrefix();
 
-		final String key = key(token);
+		return StringUtils.isBlank(prefix) ? suffix : prefix + ":" + suffix;
+	}
+
+	@Override
+	public String create(final String accountId, final TokenValue value) {
+		final String token = tokenGenerator.generate(accountId);
+
+		final String tokenKey = tokenKey(token);
 
 		String json;
 		try {
@@ -40,59 +60,121 @@ public class TokenServiceRedis implements TokenService {
 			throw new RuntimeException(e);
 		}
 
-		stringRedisTemplate.opsForValue()
-				.set(key, json, tokenProperties.getTimeout());
+		stringRedisTemplate.executePipelined((RedisCallback<Object>) connection -> {
+			final StringRedisConnection conn = (StringRedisConnection) connection;
+
+			// 存token的值
+			conn.set(tokenKey, json, Expiration.from(tokenProperties.getTimeout()), SetOption.upsert());
+
+			// 存account关联的token
+			final String accountKey = accountKey(accountId);
+			conn.sAdd(accountKey, tokenKey);
+			// account key过期时间
+			conn.expire(accountKey, tokenProperties.getTimeout()
+					.toSeconds());
+
+			return null;
+		});
 
 		return token;
 	}
 
 	@Override
 	public void delete(final String token) {
-		stringRedisTemplate.delete(key(token));
+		final String tokenKey = tokenKey(token);
+
+		final TokenValue tokenValue = findByToken(token);
+
+		if (tokenValue != null) {
+			// 从account里删除
+			final String accountKey = accountKey(tokenValue.getAccountId());
+			stringRedisTemplate.opsForSet()
+					.remove(accountKey, token);
+		}
+
+		stringRedisTemplate.delete(tokenKey);
+	}
+
+	@Override
+	public void deleteByAccountId(final String accountId) {
+		final String accountKey = accountKey(accountId);
+
+		// 删除tokens
+		final Set<String> tokenKeys = findTokenKeysByAccountId(accountId);
+		if (tokenKeys != null && !tokenKeys.isEmpty()) {
+			stringRedisTemplate.executePipelined((RedisCallback<Object>) connection -> {
+				final StringRedisConnection conn = (StringRedisConnection) connection;
+				conn.del(tokenKeys.toArray(new String[] {}));
+				return null;
+			});
+		}
+
+		// 删除account
+		stringRedisTemplate.delete(accountKey);
 	}
 
 	@Override
 	public void extend(final String token) {
-		final String key = key(token);
+		final String tokenKey = tokenKey(token);
+
+		final TokenValue tokenValue = findByToken(token);
+		if (tokenValue == null) {
+			return;
+		}
+		final String accountKey = accountKey(tokenValue.getAccountId());
 
 		final long timeout = tokenProperties.getTimeout()
 				.toSeconds();
-		final long ttl = stringRedisTemplate.getExpire(key);
+		final long ttl = stringRedisTemplate.getExpire(tokenKey);
 
 		if (ttl < timeout / 2 && ttl > 0) {
 			// 过期时间超过了超时的一半，则延期
-			stringRedisTemplate.expire(key(token), tokenProperties.getTimeout());
+			stringRedisTemplate.executePipelined((RedisCallback<Object>) connection -> {
+				final StringRedisConnection conn = (StringRedisConnection) connection;
+				conn.expire(tokenKey, tokenProperties.getTimeout()
+						.toSeconds());
+				conn.expire(accountKey, tokenProperties.getTimeout()
+						.toSeconds());
+				return null;
+			});
 		}
 	}
 
 	@Override
 	public TokenValue findByToken(final String token) {
 		final String json = stringRedisTemplate.opsForValue()
-				.get(key(token));
+				.get(tokenKey(token));
 		if (StringUtils.isNotBlank(json)) {
 			try {
 				return objectMapper.readValue(json, TokenValue.class);
 			} catch (final Exception e) {
 				throw new RuntimeException(e);
 			}
-		} else {
-			return null;
 		}
+
+		return null;
+	}
+
+	@Override
+	public Set<String> findTokenKeysByAccountId(final String accountId) {
+		final String accountKey = accountKey(accountId);
+
+		final Set<String> tokenKeys = stringRedisTemplate.opsForSet()
+				.members(accountKey);
+
+		return tokenKeys == null ? Collections.emptySet() : tokenKeys;
 	}
 
 	/**
-	 * redis key。
+	 * Token在redis里的key。
 	 *
 	 * @param token token
-	 * @return token或加前缀
+	 * @return token key
 	 */
-	private String key(final String token) {
+	private String tokenKey(final String token) {
 		final String prefix = tokenProperties.getPrefix();
-		if (StringUtils.isNotBlank(prefix)) {
-			return prefix + ":" + token;
-		} else {
-			return token;
-		}
+
+		return StringUtils.isBlank(prefix) ? token : prefix + ":" + token;
 	}
 
 }

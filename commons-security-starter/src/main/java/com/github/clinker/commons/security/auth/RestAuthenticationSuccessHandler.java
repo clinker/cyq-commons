@@ -48,7 +48,7 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 		final AuthAccountUserDetails userDetails = (AuthAccountUserDetails) authToken.getPrincipal();
 
 		// 生成并存储token
-		final String token = tokenService.create(userDetails, TokenValue.builder()
+		final String token = tokenService.create(userDetails.getId(), TokenValue.builder()
 				.accountId(userDetails.getId())
 				.username(userDetails.getUsername())
 				.authorities(grantedAuthorityConverter.encode(userDetails.getAuthorities()))
