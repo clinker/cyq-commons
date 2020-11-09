@@ -10,8 +10,8 @@ public class HttpException extends RuntimeException {
 	public HttpException() {
 	}
 
-	public HttpException(final Throwable cause) {
-		super(cause);
+	public HttpException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

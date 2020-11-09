@@ -112,7 +112,7 @@ public class HttpConnClient implements HttpConn {
 		} catch (final IOException | ParseException e) {
 			log.error("Http get error", e);
 
-			throw new HttpException(e);
+			throw new HttpException(responseString, e);
 		}
 
 		if (httpStatus != HttpStatus.SC_OK) {
@@ -145,7 +145,7 @@ public class HttpConnClient implements HttpConn {
 		} catch (final IOException | ParseException e) {
 			log.error("Http post error", e);
 
-			throw new HttpException(e);
+			throw new HttpException(responseString, e);
 		}
 
 		if (httpStatus != HttpStatus.SC_OK) {
