@@ -38,7 +38,7 @@ public class SqlParamUtils {
 	 * @param column 字段名
 	 * @param values 字段值
 	 */
-	public static String inToOr(String column, Collection<?> values) {
+	public static String inToOr(final String column, final Collection<?> values) {
 		if (column == null || column.isBlank() || values == null || values.isEmpty()) {
 			return null;
 		}
@@ -58,7 +58,12 @@ public class SqlParamUtils {
 		if (arg == null) {
 			return null;
 		}
-		return "'%" + likeEscape(arg) + "%' ESCAPE '" + LIKE_ESCAPE + "'";
+		final String stripped = arg.strip();
+		if (stripped.isBlank()) {
+			return null;
+		}
+
+		return "'%" + likeEscape(stripped) + "%' ESCAPE '" + LIKE_ESCAPE + "'";
 	}
 
 	/**
@@ -69,9 +74,14 @@ public class SqlParamUtils {
 	 */
 	private static String likeEscape(final String arg) {
 		if (arg == null) {
-			return arg;
+			return null;
 		}
-		String result = arg.replaceAll(LIKE_ESCAPE, LIKE_ESCAPE.repeat(2));
+		final String stripped = arg.strip();
+		if (stripped.isBlank()) {
+			return null;
+		}
+
+		String result = stripped.replaceAll(LIKE_ESCAPE, LIKE_ESCAPE.repeat(2));
 		result = result.replaceAll("_", LIKE_ESCAPE + "_");
 		result = result.replaceAll("%", LIKE_ESCAPE + "%");
 
