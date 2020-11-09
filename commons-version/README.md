@@ -3,5 +3,5 @@
 
 # 特性
 - Java 11
-- Spring 5.2.9.RELEASE
-- Spring Boot 2.3.4.RELEASE
+- Spring 5.2.10.RELEASE
+- Spring Boot 2.3.5.RELEASE
