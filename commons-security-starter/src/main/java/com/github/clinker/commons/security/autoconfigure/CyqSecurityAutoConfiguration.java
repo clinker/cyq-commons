@@ -25,11 +25,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.clinker.commons.security.AuthAccountUserDetailsServiceImpl;
 import com.github.clinker.commons.security.TenantProperties;
-import com.github.clinker.commons.security.auth.LoginFailRestAuthenticationFailureHandler;
 import com.github.clinker.commons.security.auth.RestAccessDeniedHandler;
 import com.github.clinker.commons.security.auth.RestAuthenticationFailureHandler;
 import com.github.clinker.commons.security.auth.RestAuthenticationSuccessHandler;
 import com.github.clinker.commons.security.auth.RestLogoutHandler;
+import com.github.clinker.commons.security.auth.impl.RestAccessDeniedHandlerImpl;
+import com.github.clinker.commons.security.auth.impl.RestAuthenticationFailureHandlerImpl;
+import com.github.clinker.commons.security.auth.impl.RestAuthenticationSuccessHandlerImpl;
+import com.github.clinker.commons.security.auth.impl.RestLogoutHandlerImpl;
 import com.github.clinker.commons.security.authz.AuthzCacheService;
 import com.github.clinker.commons.security.authz.AuthzCacheServiceImpl;
 import com.github.clinker.commons.security.authz.AuthzProperties;
@@ -168,27 +171,26 @@ class CyqSecurityAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RestAccessDeniedHandler restAccessDeniedHandler() {
-		return new RestAccessDeniedHandler(objectMapper);
+		return new RestAccessDeniedHandlerImpl(objectMapper);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	public RestAuthenticationFailureHandler restAuthenticationFailureHandler() {
-		System.err.println("111111111111");
-		return new LoginFailRestAuthenticationFailureHandler(objectMapper);
+		return new RestAuthenticationFailureHandlerImpl(objectMapper);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	public RestAuthenticationSuccessHandler restAuthenticationSuccessHandler() {
-		return new RestAuthenticationSuccessHandler(grantedAuthorityConverter(), objectMapper, tokenProperties,
+		return new RestAuthenticationSuccessHandlerImpl(grantedAuthorityConverter(), objectMapper, tokenProperties,
 				tokenService());
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	public RestLogoutHandler restLogoutHandler() {
-		return new RestLogoutHandler(tokenProperties, tokenService());
+		return new RestLogoutHandlerImpl(tokenProperties, tokenService());
 	}
 
 	@Bean

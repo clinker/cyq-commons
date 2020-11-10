@@ -1,4 +1,4 @@
-package com.github.clinker.commons.security.auth;
+package com.github.clinker.commons.security.auth.impl;
 
 import com.github.clinker.commons.security.entity.AuthAccount;
 
