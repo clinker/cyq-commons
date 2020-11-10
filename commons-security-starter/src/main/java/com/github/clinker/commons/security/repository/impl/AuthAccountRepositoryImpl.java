@@ -23,6 +23,7 @@ public class AuthAccountRepositoryImpl implements AuthAccountRepository {
 		account.setServiceId(rs.getString(index++));
 		account.setUsername(rs.getString(index++));
 		account.setPassword(rs.getString(index++));
+		account.setDisabled(rs.getBoolean(index++));
 		account.setAvatar(rs.getString(index++));
 		account.setDescription(rs.getString(index++));
 		account.setCreationTime(rs.getTimestamp(index++)
@@ -42,7 +43,7 @@ public class AuthAccountRepositoryImpl implements AuthAccountRepository {
 
 	@Override
 	public AuthAccount findByUsername(final String username, final String serviceId) {
-		final String sql = "SELECT id,service_id,username,password,avatar,description,creation_time,modified_time,deleted FROM auth_account WHERE service_id=? AND username=? AND deleted=FALSE";
+		final String sql = "SELECT id,service_id,username,password,disabled,avatar,description,creation_time,modified_time,deleted FROM auth_account WHERE service_id=? AND username=? AND deleted=FALSE";
 
 		final List<AuthAccount> accounts = jdbcTemplate.query(sql, new Object[] { username, serviceId },
 				authAccountMapper);

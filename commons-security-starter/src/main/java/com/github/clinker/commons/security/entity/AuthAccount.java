@@ -36,6 +36,11 @@ public class AuthAccount {
 	private String password;
 
 	/**
+	 * 是否禁用
+	 */
+	private Boolean disabled;
+
+	/**
 	 * 头像路径，本地UNIX格式或URI
 	 */
 	private String avatar;

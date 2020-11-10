@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,6 +48,11 @@ public class AuthAccountUserDetailsServiceImpl implements UserDetailsService {
 		if (account == null || Boolean.TRUE.equals(account.getDeleted())) {
 			log.warn("Username not found: {}", username);
 			throw new UsernameNotFoundException("账号不存在：" + username);
+		}
+
+		if (account.getDisabled()) {
+			log.warn("Username disabled: {}", username);
+			throw new DisabledException("账号已禁用：" + username);
 		}
 
 		// 角色标识作为GrantedAuthority

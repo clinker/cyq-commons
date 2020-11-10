@@ -4,20 +4,33 @@
 
 # 特性
 - 使用Token保持会话
-- 客户端通过HTTP header传递token
-- 自定义`UserDetailsService`，从MySQL读取用户数据
+    + 客户端通过HTTP header传递token
+    + Token默认为UUID字符串
+    + Token过期时间自动延长，类似HTTP session
 - RESTful请求和响应
+    + 登录请求、响应
+    + 退出登录响应
+    + 未认证响应
+    + 未授权响应
+- 自定义`UserDetailsService`，从MySQL读取用户数据
 - 账号、角色、权限，都通过`serviceId`对进行租户隔离
+- 对不需要认证的URL，将AuthPermissin的ignored设为true
 - 动态对URL进行授权，授权数据存在MySQL
-- 用ConcurrentHashMap缓存授权数据，并订阅redis消息，实现缓存刷新。发布刷新事件：`127.0.0.1:6379> publish authz:refresh 1`
+    + 用ConcurrentHashMap缓存授权数据，并订阅redis消息，实现缓存刷新。发布刷新事件：`127.0.0.1:6379> publish authz:refresh 1`
 
 # 配置
+- TenantProperties
+- AuthzProperties
+- TokenProperties
+
+示例中的值均为默认值：
 ```
 auth:
   service-id: demo
   token:
-    timeout: 4h
-    prefix: demo:auth
+    timeout: 30m
+    prefix: Authorization
+    headerValuePrefix: Bearer 
 authz:
   cache-topic: authz:refresh
 ```
@@ -26,15 +39,15 @@ authz:
 ## 禁用Session
 
 ## 使用Token保持会话
-- 自定义生成规则。本例用UUID，见`TokenGeneratorUuid`
+- 自定义生成规则。默认UUID，见`TokenGeneratorUuid`
 - 自定义header名称、header值前缀、token有效期、token在redis的key前缀， 见`TokenProperties`
 - 自定义存储。本例用redis。每个登录存两条：
     + 一个value，存放token，key是${auth.token}:${token}，值是`com.github.clinker.commons.security.token.TokenValue`
     + 一个set，存放account的所有token，key是${auth.token}:accounts:${accountId}，值是token的key
 
 ## 客户端通过HTTP header保持会话
-- `TokenProperties`定义header名称。本例是`Authorization`
-- `TokenProperties`定义header值前缀。本例是`Bearer ${token}`
+- `TokenProperties`定义header名称。默认`Authorization`
+- `TokenProperties`定义header值前缀。默认`Bearer ${token}`
 
 ## 关闭csrf
 - 关闭csrf，因为postman之类的客户端无法获得csrf token而导致没有权限访问接口
@@ -59,7 +72,7 @@ authz:
 }
 ```
 
-## 认证成功响应
+## 登录成功响应
 - 见`LoginResult`
 ```json
 {
@@ -69,10 +82,10 @@ authz:
 ```
 - 响应header
 ```
-X-Auth-Token: e72b2bd1-0cb7-4f40-81b9-c7b6f4a32f4a
+Authorization: e72b2bd1-0cb7-4f40-81b9-c7b6f4a32f4a
 ```
 
-## 认证失败响应
+## 登录失败响应
 - 见`RestAuthenticationFailureHandler`
 - 返回状态码400和JSON格式消息
 ```
@@ -96,7 +109,7 @@ X-Auth-Token: e72b2bd1-0cb7-4f40-81b9-c7b6f4a32f4a
 # 授权
 - 权限是：URL + HTTP method
     + HTTP method：逗号分隔，不区分大小写，`*`表示全部
-    + 所有URL均要求
+    + 所有URL均要求授权
 - 不检查认证和授权的URL，则设置`ignored`为`true`
 - 角色关联权限
 - 超级角色允许访问所有URL
@@ -109,6 +122,7 @@ CREATE TABLE `auth_account` (
   `service_id` varchar(50) NOT NULL COMMENT '所属服务ID，即租户',
   `username` varchar(60) NOT NULL COMMENT '登录名',
   `password` varchar(80) NOT NULL COMMENT '登录密码',
+  `disabled` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否禁用',
   `avatar` varchar(500) NOT NULL DEFAULT '' COMMENT '头像路径，本地UNIX格式或URI',
   `description` varchar(100) NOT NULL DEFAULT '' COMMENT '描述',
   `creation_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

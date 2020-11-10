@@ -4,7 +4,6 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -26,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.clinker.commons.security.AuthAccountUserDetailsServiceImpl;
 import com.github.clinker.commons.security.TenantProperties;
+import com.github.clinker.commons.security.auth.LoginFailRestAuthenticationFailureHandler;
 import com.github.clinker.commons.security.auth.RestAccessDeniedHandler;
 import com.github.clinker.commons.security.auth.RestAuthenticationFailureHandler;
 import com.github.clinker.commons.security.auth.RestAuthenticationSuccessHandler;
@@ -61,25 +61,21 @@ import lombok.AllArgsConstructor;
 @AutoConfigureAfter({ JacksonAutoConfiguration.class, DataSourceAutoConfiguration.class, RedisAutoConfiguration.class })
 @EnableConfigurationProperties({ TokenProperties.class, TenantProperties.class, AuthzProperties.class })
 @AllArgsConstructor
-class SecurityAutoConfiguration {
+class CyqSecurityAutoConfiguration {
 
+	@AllArgsConstructor
 	@Configuration
 	static class AuthzConfiguration implements InitializingBean {
 
-		@Autowired
-		private AuthPermissionRepository authPermissionRepository;
+		private final AuthPermissionRepository authPermissionRepository;
 
-		@Autowired
-		private AuthRoleRepository authRoleRepository;
+		private final AuthRoleRepository authRoleRepository;
 
-		@Autowired
-		private AuthzProperties authzProperties;
+		private final AuthzProperties authzProperties;
 
-		@Autowired
-		private ApplicationEventPublisher publisher;
+		private final ApplicationEventPublisher publisher;
 
-		@Autowired
-		private TenantProperties tenantProperties;
+		private final TenantProperties tenantProperties;
 
 		@Override
 		public void afterPropertiesSet() throws Exception {
@@ -135,7 +131,6 @@ class SecurityAutoConfiguration {
 
 	private final StringRedisTemplate stringRedisTemplate;
 
-	@Autowired
 	private final TenantProperties tenantProperties;
 
 	private final TokenProperties tokenProperties;
@@ -179,7 +174,8 @@ class SecurityAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RestAuthenticationFailureHandler restAuthenticationFailureHandler() {
-		return new RestAuthenticationFailureHandler(objectMapper);
+		System.err.println("111111111111");
+		return new LoginFailRestAuthenticationFailureHandler(objectMapper);
 	}
 
 	@Bean
