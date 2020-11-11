@@ -5,6 +5,19 @@
 - 每个手机号在一段时间内最多发一次，默认60秒内
 - 验证码最多使用若干次，然后作废，默认3次
 
+# 建议依赖
+```xml
+<dependency>
+	<groupId>io.lettuce</groupId>
+	<artifactId>lettuce-core</artifactId>
+</dependency>
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+```
+
 # 配置
 ```
 sms:

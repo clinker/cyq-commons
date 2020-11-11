@@ -18,6 +18,24 @@
 - 动态对URL进行授权，授权数据存在MySQL
     + 用ConcurrentHashMap缓存授权数据，并订阅redis消息，实现缓存刷新。发布刷新事件：`127.0.0.1:6379> publish authz:refresh 1`
 
+# 建议依赖
+```xml
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-jdbc</artifactId>
+</dependency>
+
+<dependency>
+	<groupId>io.lettuce</groupId>
+	<artifactId>lettuce-core</artifactId>
+</dependency>
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+```
+
 # 配置
 - TenantProperties
 - AuthzProperties
