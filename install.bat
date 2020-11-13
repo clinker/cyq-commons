@@ -25,15 +25,19 @@ call mvn clean install clean
 cd ..\commons-pinyin
 call mvn clean install clean
 
+cd ..\commons-http
+call mvn clean install clean
+
 cd ..\commons-transformer
 call mvn clean install clean
 
-cd ..\commons-http
+cd ..\commons-validator
 call mvn clean install clean
 
 cd ..\commons-mybatis-plus-starter
 call mvn clean install clean
 
+rem spring boot starter
 cd ..\commons-webmvc-starter
 call mvn clean install clean
 

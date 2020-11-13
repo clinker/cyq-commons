@@ -21,10 +21,11 @@
 继承commons-spring-boot-autoconfigure。
 
 # 类库
-- commons-http: HTTP客户端
-- commons-pinyin：汉字拼音
-- commons-transformer：Java Bean复制
 - commons-util：无第三方依赖的工具类集合
+- commons-pinyin：汉字拼音
+- commons-http: HTTP客户端
+- commons-transformer：Java Bean复制
+- commons-validator：无第三方依赖的工具类集合
 
 # Spring Boot Starter
 - commons-mybatis-plus-starter：定制MyBatis Plus
