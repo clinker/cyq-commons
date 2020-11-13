@@ -3,7 +3,7 @@
 
 # 特性
 - Java 11
-- 继承spring-boot-starter-parent 2.3.4.RELEASE
+- 继承spring-boot-starter-parent 2.4.0
 - 依赖
   + lombok
   + commons-lang3

@@ -45,8 +45,7 @@ public class AuthAccountRepositoryImpl implements AuthAccountRepository {
 	public AuthAccount findByUsername(final String username, final String serviceId) {
 		final String sql = "SELECT id,service_id,username,password,disabled,avatar,description,creation_time,modified_time,deleted FROM auth_account WHERE service_id=? AND username=? AND deleted=FALSE";
 
-		final List<AuthAccount> accounts = jdbcTemplate.query(sql, new Object[] { username, serviceId },
-				authAccountMapper);
+		final List<AuthAccount> accounts = jdbcTemplate.query(sql, authAccountMapper, username, serviceId);
 
 		return accounts == null || accounts.isEmpty() ? null : accounts.get(0);
 	}

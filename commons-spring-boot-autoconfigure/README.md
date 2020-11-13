@@ -3,7 +3,7 @@
 
 # 特性
 - Java 11
-- spring-boot-dependencies 2.3.4.RELEASE
+- spring-boot-dependencies 2.4.0
 
 # 依赖
 - lombok

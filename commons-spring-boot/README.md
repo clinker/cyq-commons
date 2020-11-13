@@ -4,4 +4,4 @@
 # 特性
 - spring-boot-maven-plugin
 - 依赖
-  + spring-boot-starter
+    + spring-boot-starter

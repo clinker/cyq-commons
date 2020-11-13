@@ -40,7 +40,7 @@ public class AuthPermissionRepositoryImpl implements AuthPermissionRepository {
 	public List<AuthPermission> findAll(final String serviceId) {
 		final String sql = "SELECT id,name,url,method,ignored,sort,description FROM auth_permission WHERE service_id=?";
 
-		return jdbcTemplate.query(sql, new Object[] { serviceId }, authPermissionMapper);
+		return jdbcTemplate.query(sql, authPermissionMapper, serviceId);
 	}
 
 }
