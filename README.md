@@ -25,7 +25,7 @@
 - commons-pinyin：汉字拼音
 - commons-http: HTTP客户端
 - commons-transformer：Java Bean复制
-- commons-validator：无第三方依赖的工具类集合
+- commons-validator：验证器
 
 # Spring Boot Starter
 - commons-mybatis-plus-starter：定制MyBatis Plus
