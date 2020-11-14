@@ -41,6 +41,9 @@ AES加密和解密。密钥长度128位，矢量长度128位。CBC/PKCS5Padding�
 # normalizer
 数据规范化。
 
+# num
+数字算法。
+
 # password
 密码生成。
 
