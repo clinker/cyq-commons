@@ -1,25 +1,17 @@
 package com.github.clinker.commons.http;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.config.RequestConfig;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.HttpStatus;
-import org.apache.hc.core5.http.ParseException;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.hc.core5.http.io.entity.StringEntity;
-import org.apache.hc.core5.io.CloseMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * 使用Apache HttpComponents Client实现。
@@ -35,8 +27,8 @@ import org.slf4j.LoggerFactory;
  * 使用方法：
  *
  * <pre>
- *  HttpConn httpConn = new HttpConnClient(5,100);
- *  httpConn.post(...);
+ *  HttpConn httpConn = new HttpConnClient();
+ *  httpConn.postJson(...);
  *  httpConn.get(...);
  *  ...
  *  httpConn.close();
@@ -44,118 +36,124 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpConnClient implements HttpConn {
 
-	private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-
-	private final PoolingHttpClientConnectionManager cm;
-
-	private final CloseableHttpClient httpClient;
+	public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
 	private final Logger log = LoggerFactory.getLogger(HttpConnClient.class);
 
-	public HttpConnClient() {
-		this(10, 200);
-	}
+	private final OkHttpClient client = new OkHttpClient();
 
-	public HttpConnClient(final int maxPerRoute, final int maxTotal) {
-		cm = new PoolingHttpClientConnectionManager();
-		// 连接池总数量
-		cm.setMaxTotal(maxTotal);
-		// 每route的最大连接数
-		cm.setDefaultMaxPerRoute(maxPerRoute);
-		httpClient = HttpClients.custom()
-				.disableCookieManagement()
-				.setConnectionManager(cm)
-				.build();
-	}
-
-	@Override
-	public void close() {
-		if (httpClient != null) {
-			httpClient.close(CloseMode.IMMEDIATE);
+	private OkHttpClient buildClient(final HttpTimeout timeout) {
+		if (timeout == null) {
+			return client;
 		}
 
-		if (cm != null) {
-			cm.close(CloseMode.IMMEDIATE);
+		final OkHttpClient.Builder clientBuilder = client.newBuilder();
+		if (timeout.getConnect() != null) {
+			clientBuilder.connectTimeout(timeout.getConnect());
 		}
-	}
-
-	@Override
-	public String get(final String uri) {
-		return get(uri, null, null);
-	}
-
-	@Override
-	public String get(final String uri, final Map<String, Object> headers) {
-		return get(uri, headers, null);
-	}
-
-	@Override
-	public String get(final String uri, final Map<String, Object> headers, final RequestConfig requestConfig) {
-		log.debug("Get uri: {}", uri);
-
-		String responseString = null;
-
-		int httpStatus = HttpStatus.SC_OK;
-		final HttpGet get = new HttpGet(uri);
-		if (requestConfig != null) {
-			get.setConfig(requestConfig);
+		if (timeout.getRead() != null) {
+			clientBuilder.readTimeout(timeout.getRead());
 		}
+		if (timeout.getWrite() != null) {
+			clientBuilder.writeTimeout(timeout.getWrite());
+		}
+
+		return clientBuilder.build();
+	}
+
+	@Override
+	public String get(final String url) {
+		return get(url, null, null);
+	}
+
+	@Override
+	public String get(final String url, final Map<String, String> headers, final HttpTimeout timeout) {
+		log.debug("Get url: {}", url);
+
+		final OkHttpClient client = buildClient(timeout);
+
+		final Request.Builder requestBuilder = new Request.Builder().url(url);
 		if (headers != null) {
 			headers.entrySet()
-					.forEach(entry -> get.setHeader(entry.getKey(), entry.getValue()));
+					.forEach(entry -> requestBuilder.addHeader(entry.getKey(), entry.getValue()));
 		}
 
-		try (final CloseableHttpResponse response = httpClient.execute(get)) {
-			httpStatus = response.getCode();
-			responseString = EntityUtils.toString(response.getEntity(), DEFAULT_CHARSET);
-			EntityUtils.consume(response.getEntity());
-		} catch (final IOException | ParseException e) {
-			log.error("Http get error", e);
-
-			throw new HttpIoException(responseString, e);
-		}
-
-		if (httpStatus != HttpStatus.SC_OK) {
-			log.error("Get not OK, uri: {}\nstatus: {}, {}", uri, httpStatus, responseString);
-			throw new HttpStatusException(httpStatus, responseString);
-		}
-
-		log.debug("Get uri {}, response: {}", uri, responseString);
-		return responseString;
+		return sendHttp(url, client, requestBuilder);
 	}
 
 	@Override
-	public String post(final String uri, final HttpEntity entity, final Map<String, Object> headers) {
-		return post(uri, entity, headers, null);
+	public String postForm(final String url, final Map<String, String> form) {
+		return postForm(url, form, null, null);
 	}
 
 	@Override
-	public String post(final String uri, final HttpEntity entity, final Map<String, Object> headers,
-			final RequestConfig requestConfig) {
-		log.debug("Post uri: {}", uri);
+	public String postForm(final String url, final Map<String, String> form, final Map<String, String> headers,
+			final HttpTimeout timeout) {
+		log.debug("Post form url: {}", url);
 
-		String responseString = null;
+		final OkHttpClient client = buildClient(timeout);
 
-		int httpStatus = HttpStatus.SC_OK;
-		final HttpPost post = new HttpPost(uri);
-		if (requestConfig != null) {
-			post.setConfig(requestConfig);
-		}
-		post.setEntity(entity);
+		final Request.Builder requestBuilder = new Request.Builder().url(url);
 		if (headers != null) {
 			headers.entrySet()
-					.forEach(entry -> post.setHeader(entry.getKey(), entry.getValue()));
+					.forEach(entry -> requestBuilder.addHeader(entry.getKey(), entry.getValue()));
 		}
 
-		try (CloseableHttpResponse response = httpClient.execute(post)) {
-			httpStatus = response.getCode();
-			responseString = EntityUtils.toString(response.getEntity(), DEFAULT_CHARSET);
-			EntityUtils.consume(response.getEntity());
-		} catch (final IOException | ParseException e) {
+		final FormBody.Builder formBodyBuilder = new FormBody.Builder();
+		if (form != null && !form.isEmpty()) {
+			form.entrySet()
+					.forEach(entry -> formBodyBuilder.add(entry.getKey(), entry.getValue()));
+		}
+
+		requestBuilder.post(formBodyBuilder.build());
+
+		return sendHttp(url, client, requestBuilder);
+	}
+
+	@Override
+	public String postJson(final String url, final String body) {
+		return postJson(url, body, null, null);
+	}
+
+	@Override
+	public String postJson(final String url, final String body, final Map<String, String> headers,
+			final HttpTimeout timeout) {
+		log.debug("Post json url: {}", url);
+
+		final OkHttpClient client = buildClient(timeout);
+
+		final Request.Builder requestBuilder = new Request.Builder().url(url);
+		if (headers != null) {
+			headers.entrySet()
+					.forEach(entry -> requestBuilder.addHeader(entry.getKey(), entry.getValue()));
+		}
+		requestBuilder.post(RequestBody.create(body, JSON));
+
+		return sendHttp(url, client, requestBuilder);
+	}
+
+	private String sendHttp(final String url, final OkHttpClient client, final Request.Builder requestBuilder) {
+		final Request request = requestBuilder.build();
+		String responseString = null;
+		try (Response response = client.newCall(request)
+				.execute()) {
+			responseString = response.body()
+					.string();
+
+			if (!response.isSuccessful()) {
+				log.error("Http not OK, url: {}\nstatus: {}, {}", url, response.code(), responseString);
+				throw new HttpStatusException(response.code(), responseString);
+			}
+			log.debug("Http url {}, response: {}", url, responseString);
+
+			return responseString;
+
+		} catch (final IOException e) {
 			log.error("Http post error", e);
 
 			throw new HttpIoException(responseString, e);
 		}
+<<<<<<< HEAD
 
 		if (httpStatus != HttpStatus.SC_OK) {
 			log.error("POST not OK, uri: {}\nstatus: {}, {}", uri, httpStatus, responseString);
@@ -180,6 +178,8 @@ public class HttpConnClient implements HttpConn {
 	public String post(final String uri, final String body, final Map<String, Object> headers,
 			final RequestConfig requestConfig) {
 		return post(uri, new StringEntity(body, DEFAULT_CHARSET), headers, requestConfig);
+=======
+>>>>>>> refs/heads/okhttp
 	}
 
 }

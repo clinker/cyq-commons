@@ -1,92 +1,68 @@
 package com.github.clinker.commons.http;
 
-import java.io.Closeable;
 import java.util.Map;
-
-import org.apache.hc.client5.http.config.RequestConfig;
-import org.apache.hc.core5.http.HttpEntity;
 
 /**
  * HTTP操作。
  */
-public interface HttpConn extends Closeable {
+public interface HttpConn {
 
 	/**
 	 * 将响应作为字符串。
 	 *
-	 * @param uri URI
+	 * @param url URL
 	 * @return 响应字符串
 	 */
-	String get(String uri);
+	String get(String url);
 
 	/**
 	 * 将响应作为字符串。
 	 *
-	 * @param uri     URI
+	 * @param url     URL
 	 * @param headers 请求头
+	 * @param timeout 超时时长，可以为null
 	 * @return 响应字符串
 	 */
-	String get(String uri, Map<String, Object> headers);
+	String get(String url, Map<String, String> headers, HttpTimeout timeout);
 
 	/**
-	 * 将响应作为字符串。
+	 * 请求是Form。
 	 *
-	 * @param uri           URI
-	 * @param headers       请求头
-	 * @param requestConfig RequestConfig
+	 * @param url  URL
+	 * @param form 请求表单
 	 * @return 响应字符串
 	 */
-	String get(String uri, Map<String, Object> headers, RequestConfig requestConfig);
+	String postForm(String url, Map<String, String> form);
 
 	/**
-	 * 请求体是字符串。将响应作为字符串。
+	 * 请求是Form。
 	 *
-	 * @param uri     URI
-	 * @param entity  HttpEntity
+	 * @param url     URL
+	 * @param form    请求表单
 	 * @param headers 请求头
+	 * @param timeout 超时时长，可以为null
 	 * @return 响应字符串
 	 */
-	String post(String uri, HttpEntity entity, Map<String, Object> headers);
+	String postForm(String url, Map<String, String> form, Map<String, String> headers, HttpTimeout timeout);
 
 	/**
-	 * 请求体是字符串。将响应作为字符串。
+	 * 请求和响应类型都是JSON。
 	 *
-	 * @param uri           URI
-	 * @param entity        HttpEntity
-	 * @param headers       请求头
-	 * @param requestConfig RequestConfig
-	 * @return 响应字符串
-	 */
-	String post(String uri, HttpEntity entity, Map<String, Object> headers, RequestConfig requestConfig);
-
-	/**
-	 * 请求体是字符串。将响应作为字符串。
-	 *
-	 * @param uri  URI
+	 * @param url  URL
 	 * @param body
 	 * @return 响应字符串
 	 */
-	String post(String uri, String body);
+	String postJson(String url, String body);
 
 	/**
-	 * 请求体是字符串。将响应作为字符串。
+	 * 请求和响应类型都是JSON。
 	 *
-	 * @param uri     URI
-	 * @param body
+	 * @param url     URL
+	 * @param body    请求体
 	 * @param headers 请求头
+	 * @param timeout 超时时长，可以为null
 	 * @return 响应字符串
 	 */
-	String post(String uri, String body, Map<String, Object> headers);
-
-	/**
-	 * 请求体是字符串。将响应作为字符串。
-	 *
-	 * @param uri           URI
-	 * @param entity        HttpEntity
-	 * @param headers       请求头
-	 * @param requestConfig RequestConfig
-	 * @return 响应字符串
-	 */
-	String post(String uri, String body, Map<String, Object> headers, RequestConfig requestConfig);
+	String postJson(String url, String body, Map<String, String> headers, HttpTimeout timeout);
 
 }
