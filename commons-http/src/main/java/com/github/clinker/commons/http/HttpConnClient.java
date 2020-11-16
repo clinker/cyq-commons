@@ -153,33 +153,6 @@ public class HttpConnClient implements HttpConn {
 
 			throw new HttpIoException(responseString, e);
 		}
-<<<<<<< HEAD
-
-		if (httpStatus != HttpStatus.SC_OK) {
-			log.error("POST not OK, uri: {}\nstatus: {}, {}", uri, httpStatus, responseString);
-			throw new HttpStatusException(httpStatus, responseString);
-		}
-
-		log.debug("Post uri {}, response: {}", uri, responseString);
-		return responseString;
-	}
-
-	@Override
-	public String post(final String uri, final String body) {
-		return post(uri, body, null, null);
-	}
-
-	@Override
-	public String post(final String uri, final String body, final Map<String, Object> headers) {
-		return post(uri, body, headers, null);
-	}
-
-	@Override
-	public String post(final String uri, final String body, final Map<String, Object> headers,
-			final RequestConfig requestConfig) {
-		return post(uri, new StringEntity(body, DEFAULT_CHARSET), headers, requestConfig);
-=======
->>>>>>> refs/heads/okhttp
 	}
 
 }
