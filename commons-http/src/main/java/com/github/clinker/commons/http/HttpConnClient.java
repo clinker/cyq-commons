@@ -168,12 +168,12 @@ public class HttpConnClient implements HttpConn {
 
 	@Override
 	public String post(final String uri, final String body) {
-		return post(uri, body, null);
+		return post(uri, body, null, null);
 	}
 
 	@Override
 	public String post(final String uri, final String body, final Map<String, Object> headers) {
-		return post(uri, body, headers);
+		return post(uri, body, headers, null);
 	}
 
 	@Override
