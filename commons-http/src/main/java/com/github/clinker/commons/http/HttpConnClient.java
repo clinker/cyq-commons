@@ -127,7 +127,7 @@ public class HttpConnClient implements HttpConn {
 			headers.entrySet()
 					.forEach(entry -> requestBuilder.addHeader(entry.getKey(), entry.getValue()));
 		}
-		requestBuilder.post(RequestBody.create(body, JSON));
+		requestBuilder.post(RequestBody.create(JSON, body));
 
 		return sendHttp(url, client, requestBuilder);
 	}
