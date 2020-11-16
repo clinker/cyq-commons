@@ -3,7 +3,7 @@
 HTTP 客户端。
 
 # 特性
-- 基于Apache的httpclient5
+- 基于OKHttp 3
 - 使用连接池
 - 并发连接数量可控
 
