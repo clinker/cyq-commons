@@ -36,17 +36,28 @@ public interface HttpConn extends Closeable {
 	 * @param requestConfig RequestConfig
 	 * @return 响应字符串
 	 */
-	String get(final String uri, final Map<String, Object> headers, final RequestConfig requestConfig);
+	String get(String uri, Map<String, Object> headers, RequestConfig requestConfig);
 
 	/**
-	 * 请求体是HttpEntity。将响应作为字符串。
+	 * 请求体是字符串。将响应作为字符串。
 	 *
-	 * @param uri
+	 * @param uri     URI
 	 * @param entity  HttpEntity
 	 * @param headers 请求头
 	 * @return 响应字符串
 	 */
 	String post(String uri, HttpEntity entity, Map<String, Object> headers);
+
+	/**
+	 * 请求体是字符串。将响应作为字符串。
+	 *
+	 * @param uri           URI
+	 * @param entity        HttpEntity
+	 * @param headers       请求头
+	 * @param requestConfig RequestConfig
+	 * @return 响应字符串
+	 */
+	String post(String uri, HttpEntity entity, Map<String, Object> headers, RequestConfig requestConfig);
 
 	/**
 	 * 请求体是字符串。将响应作为字符串。
@@ -66,5 +77,16 @@ public interface HttpConn extends Closeable {
 	 * @return 响应字符串
 	 */
 	String post(String uri, String body, Map<String, Object> headers);
+
+	/**
+	 * 请求体是字符串。将响应作为字符串。
+	 *
+	 * @param uri           URI
+	 * @param entity        HttpEntity
+	 * @param headers       请求头
+	 * @param requestConfig RequestConfig
+	 * @return 响应字符串
+	 */
+	String post(String uri, String body, Map<String, Object> headers, RequestConfig requestConfig);
 
 }

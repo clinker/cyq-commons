@@ -126,12 +126,21 @@ public class HttpConnClient implements HttpConn {
 
 	@Override
 	public String post(final String uri, final HttpEntity entity, final Map<String, Object> headers) {
+		return post(uri, entity, headers, null);
+	}
+
+	@Override
+	public String post(final String uri, final HttpEntity entity, final Map<String, Object> headers,
+			final RequestConfig requestConfig) {
 		log.debug("Post uri: {}", uri);
 
 		String responseString = null;
 
 		int httpStatus = HttpStatus.SC_OK;
 		final HttpPost post = new HttpPost(uri);
+		if (requestConfig != null) {
+			post.setConfig(requestConfig);
+		}
 		post.setEntity(entity);
 		if (headers != null) {
 			headers.entrySet()
@@ -164,7 +173,13 @@ public class HttpConnClient implements HttpConn {
 
 	@Override
 	public String post(final String uri, final String body, final Map<String, Object> headers) {
-		return post(uri, new StringEntity(body, DEFAULT_CHARSET), headers);
+		return post(uri, body, headers);
+	}
+
+	@Override
+	public String post(final String uri, final String body, final Map<String, Object> headers,
+			final RequestConfig requestConfig) {
+		return post(uri, new StringEntity(body, DEFAULT_CHARSET), headers, requestConfig);
 	}
 
 }
