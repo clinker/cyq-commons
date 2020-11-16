@@ -13,5 +13,4 @@ HTTP 客户端。
     httpConn.postJson(...);
     httpConn.get(...);
     ...
-    httpConn.close();
 ```
