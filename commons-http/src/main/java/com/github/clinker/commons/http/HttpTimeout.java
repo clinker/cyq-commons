@@ -1,46 +1,48 @@
 package com.github.clinker.commons.http;
 
+import java.time.Duration;
+
 /**
- * 超时。单位：秒
+ * 超时。
  */
 public class HttpTimeout {
 
 	/**
-	 * 如果<=0，则忽略
+	 * 如果为null，则忽略
 	 */
-	private long connect;
+	private Duration connect;
 
 	/**
-	 * 如果<=0，则忽略
+	 * 如果为null，则忽略
 	 */
-	private long write;
+	private Duration write;
 
 	/**
-	 * 如果<=0，则忽略
+	 * 如果为null，则忽略
 	 */
-	private long read;
+	private Duration read;
 
-	public long getConnect() {
+	public Duration getConnect() {
 		return connect;
 	}
 
-	public long getRead() {
+	public Duration getRead() {
 		return read;
 	}
 
-	public long getWrite() {
+	public Duration getWrite() {
 		return write;
 	}
 
-	public void setConnect(final long connect) {
+	public void setConnect(final Duration connect) {
 		this.connect = connect;
 	}
 
-	public void setRead(final long read) {
+	public void setRead(final Duration read) {
 		this.read = read;
 	}
 
-	public void setWrite(final long write) {
+	public void setWrite(final Duration write) {
 		this.write = write;
 	}
 
