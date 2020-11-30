@@ -38,10 +38,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
 			final FilterChain filterChain) throws ServletException, IOException {
-		String token = request.getHeader(tokenProperties.getHeader());
+		final String tokenHeaderValue = request.getHeader(tokenProperties.getHeader());
 
-		if (StringUtils.isNotBlank(token)) {
-			token = StringUtils.removeStartIgnoreCase(token, tokenProperties.getHeaderValuePrefix())
+		if (StringUtils.isNotBlank(tokenHeaderValue)) {
+			final String token = StringUtils
+					.removeStartIgnoreCase(tokenHeaderValue, tokenProperties.getHeaderValuePrefix())
 					.trim();
 			final TokenValue tokenValue = tokenService.findByToken(token);
 			if (tokenValue != null && SecurityContextHolder.getContext()

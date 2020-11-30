@@ -1,6 +1,5 @@
 package com.github.clinker.commons.security.token;
 
-import java.util.Collections;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -50,6 +49,10 @@ public class TokenServiceRedis implements TokenService {
 	 * @return account ID集合t的key
 	 */
 	private String accountKey(final String accountId) {
+		if (StringUtils.isBlank(accountId)) {
+			return null;
+		}
+
 		final String suffix = "accounts:" + accountId;
 		final String prefix = tokenProperties.getPrefix();
 
@@ -90,6 +93,10 @@ public class TokenServiceRedis implements TokenService {
 
 	@Override
 	public void deleteByAccountId(final String accountId) {
+		if (StringUtils.isBlank(accountId)) {
+			return;
+		}
+
 		final String accountKey = accountKey(accountId);
 
 		// 删除tokens
@@ -108,6 +115,10 @@ public class TokenServiceRedis implements TokenService {
 
 	@Override
 	public void deleteByToken(final String token) {
+		if (StringUtils.isBlank(token)) {
+			return;
+		}
+
 		final String tokenKey = tokenKey(token);
 
 		final TokenValue tokenValue = findByToken(token);
@@ -124,6 +135,10 @@ public class TokenServiceRedis implements TokenService {
 
 	@Override
 	public void extend(final String token) {
+		if (StringUtils.isBlank(token)) {
+			return;
+		}
+
 		final String tokenKey = tokenKey(token);
 
 		final TokenValue tokenValue = findByToken(token);
@@ -150,7 +165,22 @@ public class TokenServiceRedis implements TokenService {
 	}
 
 	@Override
+	public TokenValue findByHeaderValue(final String tokenHeaderValue) {
+		if (StringUtils.isBlank(tokenHeaderValue)) {
+			return null;
+		}
+
+		final String token = StringUtils.removeStartIgnoreCase(tokenHeaderValue, tokenProperties.getHeaderValuePrefix())
+				.trim();
+		return findByToken(token);
+	}
+
+	@Override
 	public TokenValue findByToken(final String token) {
+		if (StringUtils.isBlank(token)) {
+			return null;
+		}
+
 		final String json = stringRedisTemplate.opsForValue()
 				.get(tokenKey(token));
 		if (StringUtils.isNotBlank(json)) {
@@ -166,12 +196,22 @@ public class TokenServiceRedis implements TokenService {
 
 	@Override
 	public Set<String> findTokenKeysByAccountId(final String accountId) {
+		if (StringUtils.isBlank(accountId)) {
+			return Set.of();
+		}
+
 		final String accountKey = accountKey(accountId);
 
 		final Set<String> tokenKeys = stringRedisTemplate.opsForSet()
 				.members(accountKey);
 
-		return tokenKeys == null ? Collections.emptySet() : tokenKeys;
+		return tokenKeys == null ? Set.of() : tokenKeys;
+	}
+
+	@Override
+	public String parseToken(final String tokenHeaderValue) {
+		return StringUtils.removeStartIgnoreCase(tokenHeaderValue, tokenProperties.getHeaderValuePrefix())
+				.trim();
 	}
 
 	/**
