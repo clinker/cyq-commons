@@ -41,7 +41,7 @@ rem spring boot starter
 cd ..\commons-webmvc-starter
 call mvn clean install clean
 
-cd ..\commons-sms-verifycode-starter
+cd ..\commons-verifycode-starter
 call mvn clean install clean
 
 cd ..\commons-security-starter

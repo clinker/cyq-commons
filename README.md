@@ -30,5 +30,5 @@
 # Spring Boot Starter
 - commons-mybatis-plus-starter：定制MyBatis Plus
 - commons-security-starter: Restful认证、动态授权
-- commons-sms-verifycode-starter：短信验证码
+- commons-verifycode-starter：验证码生成、频率控制
 - commons-webmvc-starter：定制Spring MVC

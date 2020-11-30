@@ -1,4 +1,4 @@
-package com.github.clinker.commons.sms.verifycode.impl;
+package com.github.clinker.commons.verifycode.impl;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -9,23 +9,23 @@ import org.springframework.data.redis.connection.StringRedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
-import com.github.clinker.commons.sms.verifycode.SmsVerifyCodeError;
-import com.github.clinker.commons.sms.verifycode.SmsVerifyCodeManager;
 import com.github.clinker.commons.util.exception.ServiceException;
+import com.github.clinker.commons.verifycode.VerifyCodeError;
+import com.github.clinker.commons.verifycode.VerifyCodeManager;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 短信验证码用Redis管理。
+ * 验证码用Redis管理。
  * <p/>
  * <ul>
- * 规则：
- * <li>每个手机号60秒内最多发一次；</li>
- * <li>验证码最多使用3次，然后作废。</li>
+ * 特性：
+ * <li>每个键（例如：手机号）在一段时间内最多发一次，默认60秒内；</li>
+ * <li>验证码最多使用若干次，然后作废，默认3次。</li>
  * </ul>
  */
 @Slf4j
-public class RedisSmsVerifyCodeManager implements SmsVerifyCodeManager {
+public class RedisVerifyCodeManager implements VerifyCodeManager {
 
 	/**
 	 * epoch时间戳
@@ -64,8 +64,8 @@ public class RedisSmsVerifyCodeManager implements SmsVerifyCodeManager {
 	 */
 	private final Duration timeout;
 
-	public RedisSmsVerifyCodeManager(StringRedisTemplate redisTemplate, long intervalInMills, String keyPrefix,
-			int maxUsed, Duration timeout) {
+	public RedisVerifyCodeManager(final StringRedisTemplate redisTemplate, final long intervalInMills,
+			final String keyPrefix, final int maxUsed, final Duration timeout) {
 		this.redisTemplate = redisTemplate;
 		this.intervalInMills = intervalInMills;
 		this.keyPrefix = keyPrefix;
@@ -74,7 +74,7 @@ public class RedisSmsVerifyCodeManager implements SmsVerifyCodeManager {
 	}
 
 	@Override
-	public void create(String key, String verifyCode) {
+	public void create(final String key, final String verifyCode) {
 		final String redisKey = redisKey(key);
 		final long nowMilli = now();
 
@@ -85,7 +85,7 @@ public class RedisSmsVerifyCodeManager implements SmsVerifyCodeManager {
 			final long tsMilli = Long.parseLong(String.valueOf(ts));
 
 			if (nowMilli - tsMilli < intervalInMills) {
-				throw new ServiceException(SmsVerifyCodeError.TOO_FREQUENT, "请求过于频繁");
+				throw new ServiceException(VerifyCodeError.TOO_FREQUENT, "请求过于频繁");
 			}
 		}
 
@@ -109,12 +109,12 @@ public class RedisSmsVerifyCodeManager implements SmsVerifyCodeManager {
 	}
 
 	@Override
-	public void delete(String key) {
+	public void delete(final String key) {
 		redisTemplate.delete(redisKey(key));
 	}
 
 	@Override
-	public boolean matches(String key, String userInputVerifyCode) {
+	public boolean matches(final String key, final String userInputVerifyCode) {
 		final String redisKey = redisKey(key);
 
 		final List<Object> list = redisTemplate.opsForHash()

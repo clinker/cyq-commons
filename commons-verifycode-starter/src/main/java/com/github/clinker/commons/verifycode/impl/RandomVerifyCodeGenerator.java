@@ -1,19 +1,19 @@
-package com.github.clinker.commons.sms.verifycode.impl;
+package com.github.clinker.commons.verifycode.impl;
 
 import java.security.SecureRandom;
 
-import com.github.clinker.commons.sms.verifycode.SmsVerifyCodeGenerator;
+import com.github.clinker.commons.verifycode.VerifyCodeGenerator;
 
 /**
- * 随机短信验证码生成器。
+ * 随机验证码生成器。
  */
-public class RandomSmsVerifyCodeGenerator implements SmsVerifyCodeGenerator {
+public class RandomVerifyCodeGenerator implements VerifyCodeGenerator {
 
 	private final int length;
 
 	private final String source;
 
-	public RandomSmsVerifyCodeGenerator(final int length, final String source) {
+	public RandomVerifyCodeGenerator(final int length, final String source) {
 		this.length = length;
 		this.source = source;
 	}

@@ -1,6 +1,7 @@
-package com.github.clinker.commons.sms.verifycode;
+package com.github.clinker.commons.verifycode;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -11,7 +12,7 @@ import lombok.Data;
  */
 @Data
 @ConfigurationProperties(prefix = "sms.verifycode")
-public class SmsVerifyCodeProperties {
+public class VerifyCodeProperties {
 
 	/**
 	 * 验证码长度
@@ -42,5 +43,10 @@ public class SmsVerifyCodeProperties {
 	 * 同一个key下，两次新验证码之间时间间隔，单位：毫秒
 	 */
 	private long intervalInMills = 60 * 1000;
+
+	/**
+	 * 频率限制列表
+	 */
+	private List<VerifyCodeFrequencyProperties> frequencies;
 
 }

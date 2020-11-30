@@ -8,7 +8,7 @@
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>commons-sms-verifycode-starter</artifactId>
+	<artifactId>commons-verifycode-starter</artifactId>
 
 	<dependencies>
 		<dependency>

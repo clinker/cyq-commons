@@ -1,9 +1,9 @@
-package com.github.clinker.commons.sms.verifycode;
+package com.github.clinker.commons.verifycode;
 
 /**
  * 短信验证码管理器。
  */
-public interface SmsVerifyCodeManager {
+public interface VerifyCodeManager {
 
 	/**
 	 * 新建。
