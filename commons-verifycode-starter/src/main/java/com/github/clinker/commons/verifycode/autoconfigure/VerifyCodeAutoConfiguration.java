@@ -31,7 +31,7 @@ public class VerifyCodeAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public VerifyCodeGenerator VerifyCodeGenerator() {
+	public VerifyCodeGenerator verifyCodeGenerator() {
 		return new RandomVerifyCodeGenerator(verifyCodeProperties.getLength(), verifyCodeProperties.getSource());
 	}
 
