@@ -8,17 +8,17 @@ public class DistanceUtilsTest {
 
 	@Test
 	public void testSmartDistanceKm() throws Exception {
-		assertEquals("1.1km", DistanceUtils.smartDistance(1100));
+		assertEquals("1.1KM", DistanceUtils.smartDistance(1100));
 	}
 
 	@Test
 	public void testSmartDistanceKmRounded() throws Exception {
-		assertEquals("1km", DistanceUtils.smartDistance(1001));
+		assertEquals("1KM", DistanceUtils.smartDistance(1001));
 	}
 
 	@Test
 	public void testSmartDistanceMeter() throws Exception {
-		assertEquals("1.1km", DistanceUtils.smartDistance(1100));
+		assertEquals("1.1KM", DistanceUtils.smartDistance(1100));
 	}
 
 }
