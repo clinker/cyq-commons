@@ -51,7 +51,7 @@ public class GeoUtils {
 	}
 
 	/**
-	 * 用Haversine（半正矢）算法计算亮两点距离。源自
+	 * 用Haversine（半正矢）算法计算亮两点距离。保留2位小数。源自
 	 * <code>http://rosettacode.org/wiki/Haversine_formula#Java</code>.
 	 *
 	 * @param latitude1  第一点的纬度
@@ -67,8 +67,11 @@ public class GeoUtils {
 		final double lat1 = Math.toRadians(latitude1);
 		final double lat2 = Math.toRadians(latitude2);
 
-		return EQUATORIAL_RADIUS * 2 * Math.asin(Math.sqrt(Math.sin(dLat / 2) * Math.sin(dLat / 2)
+		final double distance = EQUATORIAL_RADIUS * 2 * Math.asin(Math.sqrt(Math.sin(dLat / 2) * Math.sin(dLat / 2)
 				+ Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2)));
+
+		// 保留2位小数
+		return Double.parseDouble(String.format("%.2f", distance));
 	}
 
 	/**
