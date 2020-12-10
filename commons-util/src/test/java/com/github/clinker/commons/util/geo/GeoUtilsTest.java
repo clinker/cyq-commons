@@ -38,7 +38,7 @@ public class GeoUtilsTest {
 
 	@Test
 	public void testHaversine() throws Exception {
-		assertEquals(GeoUtils.haversine(36.12, -86.67, 33.94, -118.40), 2887259.9506071103);
+		assertEquals(GeoUtils.haversine(36.12, -86.67, 33.94, -118.40), 2887259.95);
 	}
 
 	@Test
@@ -70,4 +70,5 @@ public class GeoUtilsTest {
 			assertTrue(distance - centerToVertexDistance <= range);
 		}
 	}
+
 }
