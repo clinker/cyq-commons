@@ -4,11 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class PhoneNumberMaskUtilsTest {
+public class NameMaskUtilsTest {
 
 	@Test
 	public void testMask() throws Exception {
-		assertEquals("130****5678", PhoneNumberMaskUtils.mask("13012345678"));
+		assertEquals("张**", NameMaskUtils.mask("张三四"));
+		assertEquals("张**", NameMaskUtils.mask("张三"));
 	}
 
 }
