@@ -13,6 +13,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
@@ -32,9 +35,14 @@ public class CyqJacksonAutoConfiguration {
 			builder.locale(Locale.CHINA);
 			builder.timeZone(TimeZone.getTimeZone(ZoneId.systemDefault()));
 			builder.simpleDateFormat(DateTimeFormatters.DATE_TIME_PATTERN);
+
 			builder.serializers(new LocalTimeSerializer(DateTimeFormatters.TIME));
 			builder.serializers(new LocalDateSerializer(DateTimeFormatters.DATE));
 			builder.serializers(new LocalDateTimeSerializer(DateTimeFormatters.DATE_TIME));
+
+			builder.deserializers(new LocalTimeDeserializer(DateTimeFormatters.TIME));
+			builder.deserializers(new LocalDateDeserializer(DateTimeFormatters.DATE));
+			builder.deserializers(new LocalDateTimeDeserializer(DateTimeFormatters.DATE_TIME));
 
 			// uni-app的JSON请求的key没有引号
 			builder.featuresToEnable(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES);
