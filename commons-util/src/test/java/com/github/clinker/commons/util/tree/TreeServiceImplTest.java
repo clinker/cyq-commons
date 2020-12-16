@@ -23,15 +23,10 @@ public class TreeServiceImplTest {
 		public Node() {
 		}
 
-		public Node(String id, String parentId, int displayOrder) {
+		public Node(final String id, final String parentId, final int displayOrder) {
 			this.id = id;
 			this.parentId = parentId;
 			this.displayOrder = displayOrder;
-		}
-
-		@Override
-		public int compareTo(Node o) {
-			return Integer.compare(displayOrder, o.getDisplayOrder());
 		}
 
 		@Override
@@ -53,19 +48,19 @@ public class TreeServiceImplTest {
 			return parentId;
 		}
 
-		public void setChildren(List<Node> children) {
+		public void setChildren(final List<Node> children) {
 			this.children = children;
 		}
 
-		public void setDisplayOrder(int displayOrder) {
+		public void setDisplayOrder(final int displayOrder) {
 			this.displayOrder = displayOrder;
 		}
 
-		public void setId(String id) {
+		public void setId(final String id) {
 			this.id = id;
 		}
 
-		public void setParentId(String parentId) {
+		public void setParentId(final String parentId) {
 			this.parentId = parentId;
 		}
 

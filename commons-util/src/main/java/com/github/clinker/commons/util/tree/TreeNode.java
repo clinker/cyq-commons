@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 树形节点。 有至少一个根节点。
  */
-public interface TreeNode<T extends TreeNode<T, ID>, ID> extends Comparable<T> {
+public interface TreeNode<T extends TreeNode<T, ID>, ID> {
 
 	/**
 	 * 获取子列表。

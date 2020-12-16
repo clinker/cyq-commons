@@ -21,7 +21,7 @@ public interface TreeService<T extends TreeNode<T, ID>, ID> {
 	 * @param nodes 树节点列表
 	 * @return 有层级结构的树节点列表
 	 */
-	default List<T> build(Collection<T> nodes) {
+	default List<T> build(final Collection<T> nodes) {
 		if (nodes == null || nodes.isEmpty()) {
 			return Collections.emptyList();
 		}
@@ -50,7 +50,7 @@ public interface TreeService<T extends TreeNode<T, ID>, ID> {
 			return;
 		}
 		// 排序
-		Collections.sort(children);
+		Collections.sort(children, this::compare);
 
 		parent.getChildren()
 				.addAll(children);
@@ -58,10 +58,17 @@ public interface TreeService<T extends TreeNode<T, ID>, ID> {
 		children.forEach(root -> buildChildNodes(groupedByParent, root));
 	}
 
+	/**
+	 * 排序。
+	 *
+	 * @return 排序
+	 */
+	int compare(T o1, T o2);
+
 	default List<T> findAndSortRootNodes(final Collection<T> nodes) {
 		return nodes.stream()
 				.filter(this::isRoot)
-				.sorted()
+				.sorted(this::compare)
 				.collect(Collectors.toList());
 	}
 
