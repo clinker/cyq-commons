@@ -3,6 +3,7 @@ package com.github.clinker.commons.util.tree;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,7 +51,7 @@ public interface TreeService<T extends TreeNode<T, ID>, ID> {
 			return;
 		}
 		// 排序
-		Collections.sort(children, this::compare);
+		Collections.sort(children, comparator());
 
 		parent.getChildren()
 				.addAll(children);
@@ -59,16 +60,16 @@ public interface TreeService<T extends TreeNode<T, ID>, ID> {
 	}
 
 	/**
-	 * 排序。
+	 * 节点比较器。
 	 *
-	 * @return 排序
+	 * @return 比较器。
 	 */
-	int compare(T o1, T o2);
+	Comparator<T> comparator();
 
 	default List<T> findAndSortRootNodes(final Collection<T> nodes) {
 		return nodes.stream()
 				.filter(this::isRoot)
-				.sorted(this::compare)
+				.sorted(comparator())
 				.collect(Collectors.toList());
 	}
 
