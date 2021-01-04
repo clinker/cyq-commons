@@ -37,7 +37,9 @@ call mvn clean install clean
 cd ..\commons-mybatis-plus-starter
 call mvn clean install clean
 
-rem spring boot starter
+cd ..\commons-upload-starter
+call mvn clean install clean
+
 cd ..\commons-webmvc-starter
 call mvn clean install clean
 
