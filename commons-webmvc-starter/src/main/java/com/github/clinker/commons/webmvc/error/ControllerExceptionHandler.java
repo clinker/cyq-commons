@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ControllerExceptionHandler {
 
 	/**
-	 * 参数校验错误的{@link #MESSAGE}值。
+	 * 参数校验错误的消息。
 	 *
 	 * @param fieldErrors 错误列表
 	 * @return 第一个错误的消息

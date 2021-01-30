@@ -29,9 +29,9 @@ public class RsaUtils {
 	/**
 	 * 解密。 用私钥解密。
 	 *
-	 * @param src
-	 * @param key
-	 * @return
+	 * @param src 明文
+	 * @param key 密钥
+	 * @return 密文
 	 * @throws Exception
 	 */
 	public static byte[] decryptByPrivateKey(final byte[] src, final byte[] key) throws Exception {
@@ -50,9 +50,9 @@ public class RsaUtils {
 	/**
 	 * 解密。 用私钥解密。
 	 *
-	 * @param src
-	 * @param key
-	 * @return
+	 * @param src 密文
+	 * @param key 密钥
+	 * @return 明文
 	 * @throws Exception
 	 */
 	public static byte[] decryptByPublicKey(final byte[] src, final byte[] key) throws Exception {
@@ -71,9 +71,9 @@ public class RsaUtils {
 	/**
 	 * 加密。 用私钥加密。
 	 *
-	 * @param src
-	 * @param key
-	 * @return
+	 * @param src 明文
+	 * @param key 密钥
+	 * @return 密文
 	 * @throws Exception
 	 */
 	public static byte[] encryptByPrivateKey(final byte[] src, final byte[] key) throws Exception {
@@ -92,12 +92,12 @@ public class RsaUtils {
 	/**
 	 * 加密。 用公钥加密。
 	 *
-	 * @param data
-	 * @param key
-	 * @return
+	 * @param src 明文
+	 * @param key 密钥
+	 * @return 密文
 	 * @throws Exception
 	 */
-	public static byte[] encryptByPublicKey(final byte[] data, final byte[] key) throws Exception {
+	public static byte[] encryptByPublicKey(final byte[] src, final byte[] key) throws Exception {
 		// 取得公钥
 		final X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(key);
 		final KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
@@ -107,7 +107,7 @@ public class RsaUtils {
 		final Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
 		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
-		return cipher.doFinal(data);
+		return cipher.doFinal(src);
 	}
 
 	/**

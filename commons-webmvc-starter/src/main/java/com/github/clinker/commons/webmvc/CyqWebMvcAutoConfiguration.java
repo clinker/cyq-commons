@@ -23,7 +23,7 @@ public class CyqWebMvcAutoConfiguration {
 	 */
 	@ConditionalOnProperty(prefix = PREFIX, name = "error-handling", matchIfMissing = true, havingValue = "true")
 	@ComponentScan(basePackageClasses = ControllerExceptionHandler.class)
-	static class ErrorConfiguation {
+	static class ErrorConfiguration {
 
 	}
 
