@@ -49,7 +49,7 @@ public interface HttpConn {
 	 * 请求和响应类型都是JSON。
 	 *
 	 * @param url  URL
-	 * @param body
+	 * @param body 请求体
 	 * @return 响应字符串
 	 */
 	String postJson(String url, String body);
