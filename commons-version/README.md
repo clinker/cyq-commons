@@ -3,5 +3,5 @@
 
 # 特性
 - Java 11
-- Spring 5.3.2
-- Spring Boot 2.4.1
+- Spring 5.3.4
+- Spring Boot 2.4.3
